@@ -45,26 +45,3 @@ const getTags = (async () => {
     }
 })
 
-// export const load: PageServerLoad = async ({ params }) => ({
-//     return {
-//         post: await db.getPost(params.slug),
-//     };
-// }) satisfies PageServerLoad;
-// export const load = (({ params }) => {
-//     const { data, error } = GET("/articles", {
-//         params: {
-//             query: {
-//                 limit: 20,
-//             }
-//         },
-//     }).then(data => data)
-
-//     // if (params.slug === 'hello-world') {
-//     //     return {
-//     //         title: 'Hello world!',
-//     //         content: 'Welcome to our blog. Lorem ipsum dolor sit amet...'
-//     //     };
-//     // }
-
-//     // throw error(404, 'Not found');
-// }) satisfies PageLoad;
