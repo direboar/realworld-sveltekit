@@ -1,57 +1,116 @@
 <script lang="ts">
-import ArticleListItem from "$lib/components/molecure/ArticleListItem.svelte"
-import PopularTags from "$lib/components/molecure/PopularTags.svelte"
+	import { enhance } from '$app/forms';
+	import type { PageData } from './$types';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
 
-import type { PageData } from './$types';
-export let data: PageData;
+	export let data: PageData;
 
-let authenticatd = false
-let articles = data.articles
-let tags = data.tags
-</script>    
+	const pageLimit = 10;
+
+	let authenticatd = false;
+	let articles = data.articles;
+	let articlesCount = data.articlesCount;
+	let tags = data.tags;
+
+	let currentTab = 'Global Feed'; //Your Feed or tags
+	let currentPage = 1;
+	$: totalPage = articlesCount ? Math.ceil(articlesCount / pageLimit) : 0;
+
+	const updateFormResult: SubmitFunction = () => {
+		return async ({ result, update }) => {
+			articles = result.data.articles;
+			articlesCount = result.data.articlesCount;
+			currentPage = result.data.page;
+			console.log(result.data);
+		};
+	};
+</script>
+
+<!-- {currentTab}
+{articlesCount}
+{totalPage} -->
 <div class="home-page">
-  <div class="banner">
-    <div class="container">
-      <h1 class="logo-font">conduit</h1>
-      <p>A place to share your knowledge.</p>
-    </div>
-  </div>
+	<div class="banner">
+		<div class="container">
+			<h1 class="logo-font">conduit</h1>
+			<p>A place to share your knowledge.</p>
+		</div>
+	</div>
 
-  <div class="container page">
-    <div class="row">
-      <div class="col-md-9">
-        <div class="feed-toggle">
-          <ul class="nav nav-pills outline-active">
-            {#if authenticatd}
-            <li class="nav-item">
-              <a class="nav-link" href="">Your Feed</a>
-            </li>
-            {/if}
-            <li class="nav-item">
-              <a class="nav-link active" href="">Global Feed</a>
-            </li>
-          </ul>
-        </div>
+	<div class="container page">
+		<div class="row">
+			<div class="col-md-9">
+				<div class="feed-toggle">
+					<form id="button" method="POST" action="?/displayFeed" use:enhance={updateFormResult}>
+						<ul class="nav nav-pills outline-active">
+							{#if authenticatd}
+								<li class="nav-item">
+									<button
+										class="nav-link {currentTab === 'Your Feed' ? 'active' : ''}"
+										name="value"
+										value="Your Feed"
+										on:click={() => (currentTab = 'Your Feed')}>Your Feed</button
+									>
+								</li>
+							{/if}
+							<li class="nav-item">
+								<button
+									class="nav-link {currentTab === 'Global Feed' ? 'active' : ''}"
+									name="value"
+									value="Global Feed"
+									on:click={() => (currentTab = 'Global Feed')}>Global Feed</button
+								>
+							</li>
+							{#if !currentTab.endsWith('Feed')}
+								<li class="nav-item">
+									<div class="nav-link active">{currentTab}</div>
+								</li>
+							{/if}
+						</ul>
+					</form>
+				</div>
 
-        {#each articles as article}
-        <ArticleListItem article={article}/>
-        {/each}
+				<ArticleList {articles} />
+				<ul class="pagination">
+					<!-- <form id="button" method="POST" action="?/displayTag" use:enhance={updateFormResult}> -->
+					<form
+						id="button"
+						method="POST"
+						action="?/{currentTab.endsWith('Feed') ? 'displayFeed' : 'displayTag'}"
+						use:enhance={updateFormResult}
+					>
+						<input type="hidden" name="value" value={currentTab} />
 
-        <ul class="pagination">
-          <li class="page-item active">
-            <a class="page-link" href="">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="">2</a>
-          </li>
-        </ul>
-      </div>
+						{#each Array(totalPage) as _, i}
+							<li class="page-item {currentPage === i + 1 ? 'active' : ''}">
+								<button class="page-link" name="page" value={i + 1}>{i + 1} </button>
+							</li>
+						{/each}
+					</form>
+				</ul>
+			</div>
 
-      <div class="col-md-3">
-        <div class="sidebar">
-          <PopularTags {tags}/>
-        </div>
-      </div>
-    </div>
-  </div>
+			<div class="col-md-3">
+				<div class="sidebar">
+					<div class="sidebar">
+						<p>Popular Tags</p>
+
+						<form method="POST" action="?/displayTag" use:enhance={updateFormResult}>
+							<div class="tag-list">
+								{#each tags as tag}
+									<button
+										name="value"
+										value={tag}
+										class="btn-link tag-pill tag-default"
+										on:click={() => (currentTab = tag)}>{tag}</button
+									>
+								{/each}
+							</div>
+						</form>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
 </div>

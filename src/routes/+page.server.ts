@@ -1,35 +1,76 @@
 import { error as sveltekiterror } from '@sveltejs/kit';
-import type { PageServerLoad } from './$types';
+import type { PageServerLoad, Actions } from './$types';
 
 import createClient from "openapi-fetch";
 import type { paths } from "$lib/api/apitypes";
-import ArticleListItem from '$lib/components/molecure/ArticleListItem.svelte';
 
 const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 
-export const load = (async () => {
-    let article = await getArticle()
+export const load = (async ({ params }) => {
+    let articles = await getArticles({})
     let tags = await getTags()
 
     return {
-        articles: article,
+        ...articles,
         tags: tags
     }
 
 }) satisfies PageServerLoad
 
-const getArticle = (async () => {
+export const actions = {
+    displayTag: async ({ request }) => {
+        console.log("displayTag")
+        const data = await request.formData()
+        const value = data.get("value")?.toString()
+        const page = data.get("page")?.toString()
+        const pageNumber = page ? Number(page) : undefined
+        let articles = await getArticles({ tag: value, page: pageNumber })
+        console.log(articles)
+        return {
+            ...articles,
+        }
+    },
+    displayFeed: async ({ request }) => {
+        const data = await request.formData()
+        const value = data.get("value")?.toString()
+        const page = data.get("page")?.toString()
+        const pageNumber = page ? Number(page) : undefined
+        if (value === "Global Feed") {
+            let articles = await getArticles({ page: pageNumber })
+            return {
+                ...articles,
+            }
+        } else {
+            return {
+                articles: [],
+                articlesCount: 0,
+                page: 1,
+            }
+        }
+    }
+} satisfies Actions
+
+const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
+    const pageLimit = 10
+    // const pageLimit = 20
+    if (!page) page = 1
     const { data, error } = await GET("/articles", {
         params: {
             query: {
-                limit: 20,
+                limit: pageLimit,
+                tag: tag,
+                offset: !page ? undefined : (page - 1) * pageLimit
             }
         },
     })
     if (error) {
         sveltekiterror(500)
     } else {
-        return data.articles
+        return {
+            articles: data.articles,
+            articlesCount: data.articlesCount,
+            page: page
+        }
     }
 })
 
