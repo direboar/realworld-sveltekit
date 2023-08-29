@@ -9,8 +9,6 @@
 	import type { PageData } from './$types';
 	export let data: PageData;
 
-	import type { components } from '$lib/api/apitypes';
-
 	let article = data.article;
 	let comments = data.comments;
 

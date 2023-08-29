@@ -19,39 +19,6 @@ export const load = (async ({ params }) => {
 
 }) satisfies PageServerLoad
 
-// export const actions = {
-//     displayTag: async ({ request }) => {
-//         console.log("displayTag")
-//         const data = await request.formData()
-//         const value = data.get("value")?.toString()
-//         const page = data.get("page")?.toString()
-//         const pageNumber = page ? Number(page) : undefined
-//         let articles = await getArticles({ tag: value, page: pageNumber })
-//         console.log(articles)
-//         return {
-//             ...articles,
-//         }
-//     },
-//     displayFeed: async ({ request }) => {
-//         const data = await request.formData()
-//         const value = data.get("value")?.toString()
-//         const page = data.get("page")?.toString()
-//         const pageNumber = page ? Number(page) : undefined
-//         if (value === "Global Feed") {
-//             let articles = await getArticles({ page: pageNumber })
-//             return {
-//                 ...articles,
-//             }
-//         } else {
-//             return {
-//                 articles: [],
-//                 articlesCount: 0,
-//                 page: 1,
-//             }
-//         }
-//     }
-// } satisfies Actions
-
 const getArticle = (async ({ slug }: { slug: string }) => {
     const { data, error } = await GET("/articles/{slug}", {
         params: {
