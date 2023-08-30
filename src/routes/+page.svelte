@@ -4,12 +4,12 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
 
+	import { isAuthenticated, getPageLimit } from '$lib/utils/utils';
+
 	export let data: PageData;
 
-	const pageLimit = 20;
-	// const pageLimit = 10;
+	const pageLimit = getPageLimit();
 
-	let authenticatd = false;
 	let articles = data.articles;
 	let articlesCount = data.articlesCount;
 	let tags = data.tags;
@@ -60,7 +60,7 @@
 				<div class="feed-toggle">
 					<form id="button" method="POST" action="?/displayFeed" use:enhance={updateFormResult}>
 						<ul class="nav nav-pills outline-active">
-							{#if authenticatd}
+							{#if isAuthenticated()}
 								<li class="nav-item">
 									<button
 										class="nav-link {currentTab === 'Your Feed' ? 'active' : ''}"

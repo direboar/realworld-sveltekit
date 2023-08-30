@@ -3,7 +3,9 @@ import type { PageServerLoad, Actions } from './$types';
 
 import createClient from "openapi-fetch";
 import type { paths } from "$lib/api/apitypes";
+import { getPageLimit } from '$lib/utils/utils';
 
+const pageLimit = getPageLimit()
 const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 
 export const load = (async ({ params }) => {
@@ -50,8 +52,6 @@ export const actions = {
 } satisfies Actions
 
 const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
-    // const pageLimit = 10
-    const pageLimit = 20
     if (!page) page = 1
     const { data, error } = await GET("/articles", {
         params: {

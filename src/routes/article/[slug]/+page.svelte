@@ -8,6 +8,8 @@
 	import CommentList from '$lib/components/organisms/CommentList.svelte';
 	import Article from '$lib/components/organisms/Article.svelte';
 
+	import { isAuthenticated } from '$lib/utils/utils';
+
 	import type { PageData } from './$types';
 	export let data: PageData;
 
@@ -15,16 +17,15 @@
 	let comments = data.comments;
 
 	export let owner = false;
-	export let authenticated = false;
 </script>
 
 <div class="article-page">
 	<div class="banner">
 		<div class="container">
-			<h1>{article.title}</h1>
+			<h1>{article?.title}</h1>
 			<div class="article-meta">
-				<ProfileIcon profile={article.author} />
-				<FollowButton profile={article.author} />
+				<ProfileIcon profile={article?.author} createdAt={article?.createdAt} />
+				<FollowButton profile={article?.author} />
 				&nbsp;&nbsp;
 				<FaboriteArticleButton {article} />
 				{#if owner}
@@ -53,6 +54,6 @@
 			</div>
 		</div>
 
-		<CommentList {authenticated} {comments} />
+		<CommentList authenticated={isAuthenticated()} {comments} />
 	</div>
 </div>

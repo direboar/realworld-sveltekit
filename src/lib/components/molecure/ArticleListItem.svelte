@@ -1,5 +1,6 @@
 <script lang="ts">
 	import type { components } from '$lib/api/apitypes';
+	import ProfileIcon from '$lib/components/molecure/ProfileIcon.svelte';
 	export let article: components['schemas']['Article'] = {
 		//test data.
 		slug: '',
@@ -23,11 +24,12 @@
 
 <div class="article-preview">
 	<div class="article-meta">
-		<a href="/profile/{article.author.username}"><img src={article.author.image} /></a>
+		<ProfileIcon profile={article.author} createdAt={article.createdAt} />
+		<!-- <a href="/profile/{article.author.username}"><img src={article.author.image} /></a>
 		<div class="info">
 			<a href="/profile/{article.author.username}" class="author">{article.author.username}</a>
 			<span class="date">{article.createdAt}</span>
-		</div>
+		</div> -->
 		<button class="btn btn-outline-primary btn-sm pull-xs-right">
 			<i class="ion-heart" />
 			{article.favoritesCount}

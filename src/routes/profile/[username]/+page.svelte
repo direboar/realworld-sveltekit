@@ -4,13 +4,11 @@
 	import { enhance } from '$app/forms';
 
 	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
+	import { isAuthenticated, getPageLimit } from '$lib/utils/utils';
+
+	const pageLimit = getPageLimit();
 
 	export let data: PageData;
-
-	const pageLimit = 20;
-	// const pageLimit = 10;
-
-	let authenticatd = false;
 	let { articles, articlesCount, profile } = { ...data };
 
 	let currentTab = 'My Articles'; //Your Feed or tags
