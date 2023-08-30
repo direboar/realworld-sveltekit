@@ -17,12 +17,27 @@
 	let currentPage = 1;
 	$: totalPage = articlesCount ? Math.ceil(articlesCount / pageLimit) : 0;
 
+	let nowLoading = false;
+	let pagenation = false;
+
 	const updateFormResult: SubmitFunction = () => {
+		nowLoading = true;
 		return async ({ result, update }) => {
 			articles = result.data.articles;
 			articlesCount = result.data.articlesCount;
 			currentPage = result.data.page;
 			console.log(result.data);
+			nowLoading = false;
+		};
+	};
+	const updateFormResultPagenation: SubmitFunction = () => {
+		pagenation = true;
+		return async ({ result, update }) => {
+			articles = result.data.articles;
+			articlesCount = result.data.articlesCount;
+			currentPage = result.data.page;
+			console.log(result.data);
+			pagenation = false;
 		};
 	};
 </script>
@@ -70,25 +85,34 @@
 						</ul>
 					</form>
 				</div>
+				{#if nowLoading}
+					<div class="article-preview">
+						<p>Loading Articles...</p>
+					</div>
+				{:else}
+					<ArticleList {articles} />
+					{#if pagenation}
+						<div class="article-preview">
+							<p>Loading Articles...</p>
+						</div>
+					{/if}
+					<ul class="pagination">
+						<form
+							id="button"
+							method="POST"
+							action="?/{currentTab.endsWith('Feed') ? 'displayFeed' : 'displayTag'}"
+							use:enhance={updateFormResultPagenation}
+						>
+							<input type="hidden" name="value" value={currentTab} />
 
-				<ArticleList {articles} />
-				<ul class="pagination">
-					<!-- <form id="button" method="POST" action="?/displayTag" use:enhance={updateFormResult}> -->
-					<form
-						id="button"
-						method="POST"
-						action="?/{currentTab.endsWith('Feed') ? 'displayFeed' : 'displayTag'}"
-						use:enhance={updateFormResult}
-					>
-						<input type="hidden" name="value" value={currentTab} />
-
-						{#each Array(totalPage) as _, i}
-							<li class="page-item {currentPage === i + 1 ? 'active' : ''}">
-								<button class="page-link" name="page" value={i + 1}>{i + 1} </button>
-							</li>
-						{/each}
-					</form>
-				</ul>
+							{#each Array(totalPage) as _, i}
+								<li class="page-item {currentPage === i + 1 ? 'active' : ''}">
+									<button class="page-link" name="page" value={i + 1}>{i + 1} </button>
+								</li>
+							{/each}
+						</form>
+					</ul>
+				{/if}
 			</div>
 
 			<div class="col-md-3">
