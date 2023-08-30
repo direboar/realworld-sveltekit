@@ -19,13 +19,12 @@ export const load = (async ({ params }) => {
 
 export const actions = {
     displayTag: async ({ request }) => {
-        console.log("displayTag")
         const data = await request.formData()
         const value = data.get("value")?.toString()
         const page = data.get("page")?.toString()
         const pageNumber = page ? Number(page) : undefined
         let articles = await getArticles({ tag: value, page: pageNumber })
-        console.log(articles)
+        // console.log(articles)
         return {
             ...articles,
         }
@@ -51,8 +50,8 @@ export const actions = {
 } satisfies Actions
 
 const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
-    const pageLimit = 10
-    // const pageLimit = 20
+    // const pageLimit = 10
+    const pageLimit = 20
     if (!page) page = 1
     const { data, error } = await GET("/articles", {
         params: {

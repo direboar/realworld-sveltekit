@@ -23,9 +23,9 @@
 
 <div class="article-preview">
 	<div class="article-meta">
-		<a href="/profile/eric-simons"><img src={article.author.image} /></a>
+		<a href="/profile/{article.author.username}"><img src={article.author.image} /></a>
 		<div class="info">
-			<a href="/profile/eric-simons" class="author">{article.author.username}</a>
+			<a href="/profile/{article.author.username}" class="author">{article.author.username}</a>
 			<span class="date">{article.createdAt}</span>
 		</div>
 		<button class="btn btn-outline-primary btn-sm pull-xs-right">

@@ -8,7 +8,7 @@ const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" })
 
 export const load = (async ({ params }) => {
     const slug = params.slug
-    console.log(slug)
+    // console.log(slug)
     let article = await getArticle({ slug: slug })
     let comments = await getComments({ slug: slug })
 
@@ -27,8 +27,8 @@ const getArticle = (async ({ slug }: { slug: string }) => {
             }
         }
     })
-    console.log(data)
-    console.log(error)
+    // console.log(data)
+    // console.log(error)
     if (error) {
         sveltekiterror(500)
     } else {

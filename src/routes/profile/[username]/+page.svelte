@@ -1,94 +1,115 @@
+<script lang="ts">
+	import type { PageData } from './$types';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	import { enhance } from '$app/forms';
+
+	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
+
+	export let data: PageData;
+
+	const pageLimit = 20;
+	// const pageLimit = 10;
+
+	let authenticatd = false;
+	let { articles, articlesCount, profile } = { ...data };
+
+	let currentTab = 'My Articles'; //Your Feed or tags
+	let currentPage = 1;
+	$: totalPage = articlesCount ? Math.ceil(articlesCount / pageLimit) : 0;
+
+	let nowLoading = false;
+	let pagenation = false;
+
+	const updateFormResult: SubmitFunction = () => {
+		nowLoading = true;
+		return async ({ result, update }) => {
+			articles = result.data.articles;
+			articlesCount = result.data.articlesCount;
+			currentPage = result.data.page;
+			nowLoading = false;
+		};
+	};
+	const updateFormResultPagenation: SubmitFunction = () => {
+		pagenation = true;
+		return async ({ result, update }) => {
+			articles = result.data.articles;
+			articlesCount = result.data.articlesCount;
+			currentPage = result.data.page;
+			pagenation = false;
+		};
+	};
+</script>
+
 <div class="profile-page">
-  <div class="user-info">
-    <div class="container">
-      <div class="row">
-        <div class="col-xs-12 col-md-10 offset-md-1">
-          <img src="http://i.imgur.com/Qr71crq.jpg" class="user-img" />
-          <h4>Eric Simons</h4>
-          <p>
-            Cofounder @GoThinkster, lived in Aol's HQ for a few months, kinda looks like Peeta from
-            the Hunger Games
-          </p>
-          <button class="btn btn-sm btn-outline-secondary action-btn">
-            <i class="ion-plus-round"></i>
-            &nbsp; Follow Eric Simons
-          </button>
-          <button class="btn btn-sm btn-outline-secondary action-btn">
-            <i class="ion-gear-a"></i>
-            &nbsp; Edit Profile Settings
-          </button>
-        </div>
-      </div>
-    </div>
-  </div>
+	<div class="user-info">
+		<div class="container">
+			<div class="row">
+				<div class="col-xs-12 col-md-10 offset-md-1">
+					<img src={profile.image} class="user-img" />
+					<h4>{profile.username}</h4>
+					<p>{profile.bio ? profile.bio : ''}</p>
+					<button class="btn btn-sm btn-outline-secondary action-btn">
+						<i class="ion-plus-round" />
+						&nbsp; Follow Eric Simons
+					</button>
+					<button class="btn btn-sm btn-outline-secondary action-btn">
+						<i class="ion-gear-a" />
+						&nbsp; Edit Profile Settings
+					</button>
+				</div>
+			</div>
+		</div>
+	</div>
 
-  <div class="container">
-    <div class="row">
-      <div class="col-xs-12 col-md-10 offset-md-1">
-        <div class="articles-toggle">
-          <ul class="nav nav-pills outline-active">
-            <li class="nav-item">
-              <a class="nav-link active" href="">My Articles</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="">Favorited Articles</a>
-            </li>
-          </ul>
-        </div>
+	<div class="container">
+		<div class="row">
+			<div class="col-xs-12 col-md-10 offset-md-1">
+				<div class="articles-toggle">
+					<form id="button" method="POST" action="?/displayFeed" use:enhance={updateFormResult}>
+						<ul class="nav nav-pills outline-active">
+							<li class="nav-item">
+								<button
+									class="nav-link {currentTab === 'My Articles' ? 'active' : ''}"
+									name="value"
+									value="My Articles"
+									on:click={() => {
+										currentTab = 'My Articles';
+									}}>My Articles</button
+								>
+							</li>
+							<li class="nav-item">
+								<button
+									class="nav-link {currentTab === 'Favorited Articles' ? 'active' : ''}"
+									name="value"
+									value="Favorited Articles"
+									on:click={() => {
+										currentTab = 'Favorited Articles';
+									}}>Favorited Articles</button
+								>
+							</li>
+						</ul>
+					</form>
+				</div>
 
-        <div class="article-preview">
-          <div class="article-meta">
-            <a href="/profile/eric-simons"><img src="http://i.imgur.com/Qr71crq.jpg" /></a>
-            <div class="info">
-              <a href="/profile/eric-simons" class="author">Eric Simons</a>
-              <span class="date">January 20th</span>
-            </div>
-            <button class="btn btn-outline-primary btn-sm pull-xs-right">
-              <i class="ion-heart"></i> 29
-            </button>
-          </div>
-          <a href="/article/how-to-buil-webapps-that-scale" class="preview-link">
-            <h1>How to build webapps that scale</h1>
-            <p>This is the description for the post.</p>
-            <span>Read more...</span>
-            <ul class="tag-list">
-              <li class="tag-default tag-pill tag-outline">realworld</li>
-              <li class="tag-default tag-pill tag-outline">implementations</li>
-            </ul>
-          </a>
-        </div>
+				<ArticleList {articles} />
 
-        <div class="article-preview">
-          <div class="article-meta">
-            <a href="/profile/albert-pai"><img src="http://i.imgur.com/N4VcUeJ.jpg" /></a>
-            <div class="info">
-              <a href="/profile/albert-pai" class="author">Albert Pai</a>
-              <span class="date">January 20th</span>
-            </div>
-            <button class="btn btn-outline-primary btn-sm pull-xs-right">
-              <i class="ion-heart"></i> 32
-            </button>
-          </div>
-          <a href="/article/the-song-you" class="preview-link">
-            <h1>The song you won't ever stop singing. No matter how hard you try.</h1>
-            <p>This is the description for the post.</p>
-            <span>Read more...</span>
-            <ul class="tag-list">
-              <li class="tag-default tag-pill tag-outline">Music</li>
-              <li class="tag-default tag-pill tag-outline">Song</li>
-            </ul>
-          </a>
-        </div>
+				<ul class="pagination">
+					<form
+						id="button"
+						method="POST"
+						action="?/displayFeed"
+						use:enhance={updateFormResultPagenation}
+					>
+						<input type="hidden" name="value" value={currentTab} />
 
-        <ul class="pagination">
-          <li class="page-item active">
-            <a class="page-link" href="">1</a>
-          </li>
-          <li class="page-item">
-            <a class="page-link" href="">2</a>
-          </li>
-        </ul>
-      </div>
-    </div>
-  </div>
+						{#each Array(totalPage) as _, i}
+							<li class="page-item {currentPage === i + 1 ? 'active' : ''}">
+								<button class="page-link" name="page" value={i + 1}>{i + 1} </button>
+							</li>
+						{/each}
+					</form>
+				</ul>
+			</div>
+		</div>
+	</div>
 </div>

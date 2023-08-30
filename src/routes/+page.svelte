@@ -6,7 +6,8 @@
 
 	export let data: PageData;
 
-	const pageLimit = 10;
+	const pageLimit = 20;
+	// const pageLimit = 10;
 
 	let authenticatd = false;
 	let articles = data.articles;
@@ -26,7 +27,7 @@
 			articles = result.data.articles;
 			articlesCount = result.data.articlesCount;
 			currentPage = result.data.page;
-			console.log(result.data);
+			// console.log(result.data);
 			nowLoading = false;
 		};
 	};
@@ -36,7 +37,7 @@
 			articles = result.data.articles;
 			articlesCount = result.data.articlesCount;
 			currentPage = result.data.page;
-			console.log(result.data);
+			// console.log(result.data);
 			pagenation = false;
 		};
 	};
