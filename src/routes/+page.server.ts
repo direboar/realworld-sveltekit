@@ -3,14 +3,14 @@ import type { PageServerLoad, Actions } from './$types';
 
 import createClient from "openapi-fetch";
 import type { paths } from "$lib/api/apitypes";
-import { getPageLimit } from '$lib/utils/utils';
+import { getPageLimit, createHeadersOptions } from '$lib/utils/utils';
 
 const pageLimit = getPageLimit()
 const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 
 export const load = (async ({ params }) => {
     let articles = await getArticles({})
-    let tags = await getTags()
+    let tags = await getTags({})
 
     return {
         ...articles,
@@ -20,7 +20,7 @@ export const load = (async ({ params }) => {
 }) satisfies PageServerLoad
 
 export const actions = {
-    displayTag: async ({ request }) => {
+    displayTag: async ({ request, locals }) => {
         const data = await request.formData()
         const value = data.get("value")?.toString()
         const page = data.get("page")?.toString()
@@ -31,7 +31,8 @@ export const actions = {
             ...articles,
         }
     },
-    displayFeed: async ({ request }) => {
+    displayFeed: async ({ request, locals }) => {
+        console.log(locals)
         const data = await request.formData()
         const value = data.get("value")?.toString()
         const page = data.get("page")?.toString()
@@ -61,6 +62,7 @@ const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
                 offset: !page ? undefined : (page - 1) * pageLimit
             }
         },
+        // headers: createHeadersOptions(locals)
     })
     if (error) {
         sveltekiterror(500)
@@ -77,6 +79,7 @@ const getTags = (async () => {
     const { data, error } = await GET("/tags", {
         params: {
         },
+        // headers: createHeadersOptions(locals)
     })
     if (error) {
         sveltekiterror(500)

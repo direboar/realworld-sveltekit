@@ -1,4 +1,5 @@
 import { PUBLIC_AUTHENTICATED, PUBLIC_PAGELIMIT } from '$env/static/public';
+
 export const isAuthenticated = () => {
     return PUBLIC_AUTHENTICATED.toLowerCase() === 'true';
 }
@@ -14,4 +15,16 @@ export const formatDate = (date: string) => {
         month: 'long',
         day: 'numeric'
     });
+}
+
+//FIXME
+export const createHeadersOptions = (locals?: App.Locals): any => {
+    let token = locals?.token
+    if (token) {
+        return {
+            "Authorization": `Toekn {token}`
+        }
+    } else {
+        return {}
+    }
 }
