@@ -43,6 +43,7 @@
 	};
 </script>
 
+{data.user}
 <!-- {currentTab}
 {articlesCount}
 {totalPage} -->

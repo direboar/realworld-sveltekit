@@ -37,7 +37,7 @@ export const actions = {
                 return response
             } else if (response.user) {
                 console.log("redirect")
-                cookies.set("token", response.user.token, { httpOnly: true })
+                cookies.set("userinfo", btoa(JSON.stringify(response.user)), { httpOnly: true })
                 throw redirect(303, "/")
             } else {
 

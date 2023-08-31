@@ -4,7 +4,13 @@ declare global {
 	namespace App {
 		// interface Error {}
 		interface Locals {
-			token: string | undefined
+			user: {
+				username: string,
+				password: string,
+				token: string,
+				image: string,
+				bio: string
+			}
 		}
 		// interface PageData {}
 		// interface Platform {}
