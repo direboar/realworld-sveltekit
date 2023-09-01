@@ -5,14 +5,12 @@ export const handle = (async ({ event, resolve }) => {
 
     let cookies = event.cookies
     let userInfo = cookies.get("userinfo")
-    console.log(userInfo)
 
     let user = null
     if (userInfo) {
-        user = atob(userInfo)
+        user = JSON.parse(atob(userInfo))
     }
-    console.log(user)
-    // console.log(cookies.get(JSON.parse(user)))
+    // console.log(user)
     event.locals.user = user
 
     const response = await resolve(event);

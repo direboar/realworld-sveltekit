@@ -36,7 +36,6 @@ export const actions = {
             if (response.error) {
                 return response
             } else if (response.user) {
-                console.log("redirect")
                 cookies.set("userinfo", btoa(JSON.stringify(response.user)), { httpOnly: true })
                 throw redirect(303, "/")
             } else {
@@ -62,11 +61,5 @@ const createUser = (async ({ username, email, password }: { username: string, em
         user: data?.user,
         error: error
     }
-    // if (error) {
-    //     return { user: data.user }
-    // } else {
-    //     console.log("data:" + JSON.stringify(data))
-    //     return { user: data.user }
-    // }
 })
 

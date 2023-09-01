@@ -4,7 +4,7 @@
 	import { enhance } from '$app/forms';
 
 	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
-	import { isAuthenticated, getPageLimit } from '$lib/utils/utils';
+	import { getPageLimit } from '$lib/utils/utils';
 
 	const pageLimit = getPageLimit();
 

@@ -1,8 +1,8 @@
 <script lang="ts">
 	import Header from '$lib/components/organisms/Header.svelte';
 	import Footer from '$lib/components/organisms/Footer.svelte';
-
-	import { isAuthenticated } from '$lib/utils/utils';
+	import type { PageData } from './$types';
+	export let data: PageData;
 </script>
 
 <svelte:head>
@@ -23,6 +23,6 @@
 	<link rel="stylesheet" href="//demo.productionready.io/main.css" />
 </svelte:head>
 
-<Header authenticated={isAuthenticated()} />
+<Header authenticated={!!data.user} username={data.user?.username} />
 <slot />
 <Footer />

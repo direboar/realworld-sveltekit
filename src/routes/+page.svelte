@@ -4,7 +4,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
 
-	import { isAuthenticated, getPageLimit } from '$lib/utils/utils';
+	import { getPageLimit } from '$lib/utils/utils';
 
 	export let data: PageData;
 
@@ -27,7 +27,6 @@
 			articles = result.data.articles;
 			articlesCount = result.data.articlesCount;
 			currentPage = result.data.page;
-			// console.log(result.data);
 			nowLoading = false;
 		};
 	};
@@ -37,16 +36,11 @@
 			articles = result.data.articles;
 			articlesCount = result.data.articlesCount;
 			currentPage = result.data.page;
-			// console.log(result.data);
 			pagenation = false;
 		};
 	};
 </script>
 
-{data.user}
-<!-- {currentTab}
-{articlesCount}
-{totalPage} -->
 <div class="home-page">
 	<div class="banner">
 		<div class="container">
@@ -61,7 +55,7 @@
 				<div class="feed-toggle">
 					<form id="button" method="POST" action="?/displayFeed" use:enhance={updateFormResult}>
 						<ul class="nav nav-pills outline-active">
-							{#if isAuthenticated()}
+							{#if data.user}
 								<li class="nav-item">
 									<button
 										class="nav-link {currentTab === 'Your Feed' ? 'active' : ''}"

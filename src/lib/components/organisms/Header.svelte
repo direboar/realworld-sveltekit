@@ -1,5 +1,6 @@
 <script lang="ts">
 	export let authenticated = false;
+	export let username = 'eric-simons';
 </script>
 
 <nav class="navbar navbar-light">
@@ -18,9 +19,9 @@
 					<a class="nav-link" href="/settings"> <i class="ion-gear-a" />&nbsp;Settings </a>
 				</li>
 				<li class="nav-item">
-					<a class="nav-link" href="/profile/eric-simons">
+					<a class="nav-link" href="/profile/{username}">
 						<img src="" class="user-pic" />
-						Eric Simons
+						{username}
 					</a>
 				</li>
 			{:else}

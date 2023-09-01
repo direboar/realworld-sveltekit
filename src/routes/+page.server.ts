@@ -62,7 +62,6 @@ const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
                 offset: !page ? undefined : (page - 1) * pageLimit
             }
         },
-        // headers: createHeadersOptions(locals)
     })
     if (error) {
         sveltekiterror(500)
@@ -79,7 +78,6 @@ const getTags = (async () => {
     const { data, error } = await GET("/tags", {
         params: {
         },
-        // headers: createHeadersOptions(locals)
     })
     if (error) {
         sveltekiterror(500)

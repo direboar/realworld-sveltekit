@@ -8,8 +8,6 @@
 	import CommentList from '$lib/components/organisms/CommentList.svelte';
 	import Article from '$lib/components/organisms/Article.svelte';
 
-	import { isAuthenticated } from '$lib/utils/utils';
-
 	import type { PageData } from './$types';
 	export let data: PageData;
 
@@ -54,6 +52,6 @@
 			</div>
 		</div>
 
-		<CommentList authenticated={isAuthenticated()} {comments} />
+		<CommentList authenticated={!!data.user} {comments} />
 	</div>
 </div>

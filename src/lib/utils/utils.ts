@@ -1,8 +1,4 @@
-import { PUBLIC_AUTHENTICATED, PUBLIC_PAGELIMIT } from '$env/static/public';
-
-export const isAuthenticated = () => {
-    return PUBLIC_AUTHENTICATED.toLowerCase() === 'true';
-}
+import { PUBLIC_PAGELIMIT } from '$env/static/public';
 
 export const getPageLimit = () => {
     return Number(PUBLIC_PAGELIMIT)
@@ -17,12 +13,11 @@ export const formatDate = (date: string) => {
     });
 }
 
-//FIXME
 export const createHeadersOptions = (locals?: App.Locals): any => {
-    let token = locals?.token
-    if (token) {
+    let user = locals?.user
+    if (user) {
         return {
-            "Authorization": `Toekn {token}`
+            "Authorization": `Token ${user.token}`
         }
     } else {
         return {}
