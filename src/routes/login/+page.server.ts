@@ -7,22 +7,10 @@ import { fail, redirect } from '@sveltejs/kit';
 
 const { POST } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 
-// export const load = (async ({ params }) => {
-//     let articles = await getArticles({})
-//     let tags = await getTags()
-
-//     return {
-//         ...articles,
-//         tags: tags
-//     }
-
-// }) satisfies PageServerLoad
-
 export const actions = {
-    createUser: async ({ request, cookies }) => {
+    login: async ({ request, cookies }) => {
         const data = await request.formData()
         console.log(data)
-        const username = data.get("username") as string
         const email = data.get("email") as string
         const password = data.get("password") as string
 
@@ -31,8 +19,9 @@ export const actions = {
         //     return fail(400, { email, missing: true });
         // }
 
-        if (username && email && password) {
-            const response = await createUser({ username: username, email: email, password: password })
+        if (email && password) {
+            const response = await createUser({ email: email, password: password })
+            console.log(JSON.stringify(response))
             if (response.error) {
                 return response
             } else if (response.user) {
@@ -47,13 +36,12 @@ export const actions = {
     }
 } satisfies Actions
 
-const createUser = (async ({ username, email, password }: { username: string, email: string, password: string }) => {
-    const { data, error } = await POST("/users", {
+const createUser = (async ({ email, password }: { email: string, password: string }) => {
+    const { data, error } = await POST("/users/login", {
         body: {
             user: {
-                username: username,
-                password: password,
-                email: email
+                email: email,
+                password: password
             }
         }
     })

@@ -1,5 +1,5 @@
 import { error as sveltekiterror } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from '../$types';
+import type { PageServerLoad } from '../$types';
 
 import createClient from "openapi-fetch";
 import type { paths } from "$lib/api/apitypes";

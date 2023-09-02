@@ -1,7 +1,5 @@
 <script lang="ts">
 	import type { ActionData } from './$types';
-	import type { SubmitFunction } from '@sveltejs/kit';
-
 	export let form: ActionData;
 	let { error } = { ...form };
 </script>

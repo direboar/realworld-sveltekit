@@ -22,8 +22,8 @@ export const load = (async ({ params }) => {
 export const actions = {
     displayTag: async ({ request, locals }) => {
         const data = await request.formData()
-        const value = data.get("value")?.toString()
-        const page = data.get("page")?.toString()
+        const value = data.get("value") as string
+        const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
         let articles = await getArticles({ tag: value, page: pageNumber })
         // console.log(articles)
@@ -34,8 +34,8 @@ export const actions = {
     displayFeed: async ({ request, locals }) => {
         console.log(locals)
         const data = await request.formData()
-        const value = data.get("value")?.toString()
-        const page = data.get("page")?.toString()
+        const value = data.get("value") as string
+        const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
         if (value === "Global Feed") {
             let articles = await getArticles({ page: pageNumber })

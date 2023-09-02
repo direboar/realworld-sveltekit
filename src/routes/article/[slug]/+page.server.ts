@@ -54,16 +54,3 @@ const getComments = (async ({ slug }: { slug: string }) => {
         }
     }
 })
-
-// const getTags = (async () => {
-//     const { data, error } = await GET("/tags", {
-//         params: {
-//         },
-//     })
-//     if (error) {
-//         sveltekiterror(500)
-//     } else {
-//         return data.tags
-//     }
-// })
-

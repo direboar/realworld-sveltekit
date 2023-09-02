@@ -21,11 +21,11 @@ export const actions = {
     update: async ({ request, cookies, locals }) => {
         const data = await request.formData()
         console.log(data)
-        const username = data.get("username")?.toString()
-        const password = data.get("password")?.toString()
-        const image = data.get("image")?.toString()
-        const email = data.get("email")?.toString()
-        const bio = data.get("bio")?.toString()
+        const username = data.get("username") as string
+        const password = data.get("password") as string
+        const image = data.get("image") as string
+        const email = data.get("email") as string
+        const bio = data.get("bio") as string
         if (username && email && image) {
             const response = await updateUser({ username: username, email: email, password: password, image: image, bio: bio, locals: locals })
             if (response.error) {
