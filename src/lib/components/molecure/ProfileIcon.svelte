@@ -11,7 +11,7 @@
 	export let createdAt: string = 'xxx';
 </script>
 
-<a href="/profile/eric-simons"><img src={profile.image} /></a>
+<a href="/profile/{profile.username}"><img src={profile.image} /></a>
 <div class="info">
 	<a href="/profile/{profile.username}" class="author"
 		>{profile.username}

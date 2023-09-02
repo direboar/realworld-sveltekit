@@ -49,7 +49,7 @@
 					{#if !data.user || data.user.username !== profile.username}
 						<button class="btn btn-sm btn-outline-secondary action-btn">
 							<i class="ion-plus-round" />
-							&nbsp; Follow Eric Simons
+							&nbsp; Follow {profile.username}
 						</button>
 					{/if}
 					{#if data.user && data.user.username === profile.username}
