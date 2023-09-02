@@ -25,7 +25,7 @@ export const actions = {
         const value = data.get("value") as string
         const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
-        let articles = await getArticles({ tag: value, page: pageNumber })
+        let articles = await getArticles({ tag: value, page: pageNumber, locals: locals })
         // console.log(articles)
         return {
             ...articles,
@@ -38,7 +38,7 @@ export const actions = {
         const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
         if (value === "Global Feed") {
-            let articles = await getArticles({ page: pageNumber })
+            let articles = await getArticles({ page: pageNumber, locals: locals })
             return {
                 ...articles,
             }
@@ -52,7 +52,7 @@ export const actions = {
     }
 } satisfies Actions
 
-const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
+const getArticles = (async ({ page, tag, locals }: { page?: number, tag?: string, locals: App.Locals }) => {
     if (!page) page = 1
     const { data, error } = await GET("/articles", {
         params: {
@@ -62,6 +62,7 @@ const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
                 offset: !page ? undefined : (page - 1) * pageLimit
             }
         },
+        headers: createHeadersOptions(locals)
     })
     if (error) {
         sveltekiterror(500)
@@ -74,10 +75,11 @@ const getArticles = (async ({ page, tag }: { page?: number, tag?: string }) => {
     }
 })
 
-const getTags = (async () => {
+const getTags = (async (locals: App.Locals) => {
     const { data, error } = await GET("/tags", {
         params: {
         },
+        headers: createHeadersOptions(locals)
     })
     if (error) {
         sveltekiterror(500)

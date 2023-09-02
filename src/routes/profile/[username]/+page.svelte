@@ -92,8 +92,18 @@
 						</ul>
 					</form>
 				</div>
-
-				<ArticleList {articles} />
+				{#if nowLoading}
+					<div class="article-preview">
+						<p>Loading Articles...</p>
+					</div>
+				{:else}
+					<ArticleList {articles} />
+				{/if}
+				{#if pagenation}
+					<div class="article-preview">
+						<p>Loading Articles...</p>
+					</div>
+				{/if}
 
 				<ul class="pagination">
 					<form
