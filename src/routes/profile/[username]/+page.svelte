@@ -46,14 +46,18 @@
 					<img src={profile.image} class="user-img" />
 					<h4>{profile.username}</h4>
 					<p>{profile.bio ? profile.bio : ''}</p>
-					<button class="btn btn-sm btn-outline-secondary action-btn">
-						<i class="ion-plus-round" />
-						&nbsp; Follow Eric Simons
-					</button>
-					<button class="btn btn-sm btn-outline-secondary action-btn">
-						<i class="ion-gear-a" />
-						&nbsp; Edit Profile Settings
-					</button>
+					{#if !data.user || data.user.username !== profile.username}
+						<button class="btn btn-sm btn-outline-secondary action-btn">
+							<i class="ion-plus-round" />
+							&nbsp; Follow Eric Simons
+						</button>
+					{/if}
+					{#if data.user && data.user.username === profile.username}
+						<a class="btn btn-sm btn-outline-secondary action-btn" href="/settings">
+							<i class="ion-gear-a" />
+							&nbsp; Edit Profile Settings
+						</a>
+					{/if}
 				</div>
 			</div>
 		</div>

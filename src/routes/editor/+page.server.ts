@@ -39,7 +39,9 @@ export const actions = {
             if (response.error) {
                 return response
             } else if (response.article) {
-                throw redirect(303, `/profile/${locals.user.username}`)
+                throw redirect(303, `/article/${response.article.slug}`)
+
+                // throw redirect(303, `/profile/${locals.user.username}`)
             } else {
                 throw sveltekiterror(500)
             }
