@@ -8,9 +8,9 @@ import { getPageLimit, createHeadersOptions } from '$lib/utils/utils';
 const pageLimit = getPageLimit()
 const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 
-export const load = (async ({ params }) => {
-    let articles = await getArticles({})
-    let tags = await getTags({})
+export const load = (async ({ params, locals }) => {
+    let articles = await getArticles({ locals: locals })
+    let tags = await getTags(locals)
 
     return {
         ...articles,
