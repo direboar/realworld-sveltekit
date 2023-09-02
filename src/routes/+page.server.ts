@@ -43,22 +43,22 @@ export const actions = {
                 ...articles,
             }
         } else {
+            let articles = await getArticles({ page: pageNumber, author: locals.user.username, locals: locals })
             return {
-                articles: [],
-                articlesCount: 0,
-                page: 1,
+                ...articles,
             }
         }
     }
 } satisfies Actions
 
-const getArticles = (async ({ page, tag, locals }: { page?: number, tag?: string, locals: App.Locals }) => {
+const getArticles = (async ({ page, tag, author, locals }: { page?: number, tag?: string, author?: string, locals: App.Locals }) => {
     if (!page) page = 1
     const { data, error } = await GET("/articles", {
         params: {
             query: {
                 limit: pageLimit,
                 tag: tag,
+                author: author,
                 offset: !page ? undefined : (page - 1) * pageLimit
             }
         },
