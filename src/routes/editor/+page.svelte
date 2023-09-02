@@ -6,11 +6,18 @@
 
 	let tag = '';
 	let tags: Set<string> = new Set([]);
+
 	const onKeyPress = (e: KeyboardEvent) => {
 		if (e.key === 'Enter') {
 			tags = new Set([...tags, tag]);
+			tag = '';
 			e.preventDefault();
 		}
+	};
+
+	const removeTag = (tag: string) => {
+		tags.delete(tag);
+		tags = new Set([...tags]);
 	};
 </script>
 
@@ -66,10 +73,16 @@
 							<input type="hidden" name="tags" value={[...tags]} />
 							<div class="tag-list">
 								{#each tags as tag}
-									<span class="tag-default tag-pill">
+									<button
+										type="button"
+										class="btn-link tag-default tag-pill"
+										on:click={() => {
+											removeTag(tag);
+										}}
+									>
 										<i class="ion-close-round" />
 										{tag}
-									</span>
+									</button>
 								{/each}
 							</div>
 						</fieldset>
