@@ -21,7 +21,6 @@ export const actions = {
 
         if (email && password) {
             const response = await createUser({ email: email, password: password })
-            console.log(JSON.stringify(response))
             if (response.error) {
                 return response
             } else if (response.user) {

@@ -1,4 +1,5 @@
 <script lang="ts">
-    import Editor from "$lib/components/organisms/Editor.svelte"
+	import Editor from '../Editor.svelte';
 </script>
-<Editor/>
+
+<Editor />
