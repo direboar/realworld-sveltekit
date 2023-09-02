@@ -21,9 +21,7 @@ import { createHeadersOptions } from '$lib/utils/utils';
 
 export const actions = {
     postArticle: async ({ request, cookies, locals }) => {
-        console.log("xxxxxxx")
         const data = await request.formData()
-        console.log(data)
         const title = data.get("title") as string
         const description = data.get("description") as string
         const body = data.get("body") as string

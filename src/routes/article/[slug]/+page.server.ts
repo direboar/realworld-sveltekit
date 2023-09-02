@@ -1,4 +1,4 @@
-import { error as sveltekiterror } from '@sveltejs/kit';
+import { error as sveltekiterror, redirect } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from '../$types';
 
 import createClient from "openapi-fetch";
@@ -6,7 +6,7 @@ import type { paths } from "$lib/api/apitypes";
 
 import { createHeadersOptions } from "$lib/utils/utils"
 
-const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
+const { GET, POST } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 
 export const load = (async ({ params, locals }) => {
     const slug = params.slug
@@ -21,6 +21,30 @@ export const load = (async ({ params, locals }) => {
 
 }) satisfies PageServerLoad
 
+export const actions = {
+    postComment: async ({ params, request, locals }) => {
+        const data = await request.formData()
+        const slug = params.slug
+        const comment = data.get("comment") as string
+
+        //FIXME バリデーション
+
+        if (comment) {
+            const response = await postComment({ slug: slug, comment: comment, locals: locals })
+            console.log(JSON.stringify(response))
+            if (response.error) {
+                return response
+            } else if (response.article) {
+                throw redirect(303, `/article/${slug}`)
+            } else {
+                throw sveltekiterror(500)
+            }
+        } else {
+            throw sveltekiterror(400)
+        }
+    }
+} satisfies Actions
+
 const getArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
     const { data, error } = await GET("/articles/{slug}", {
         params: {
@@ -30,8 +54,6 @@ const getArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals 
         },
         headers: createHeadersOptions(locals)
     })
-    // console.log(data)
-    // console.log(error)
     if (error) {
         sveltekiterror(500)
     } else {
@@ -58,3 +80,24 @@ const getComments = (async ({ slug, locals }: { slug: string, locals: App.Locals
         }
     }
 })
+
+const postComment = (async ({ slug, comment, locals }: { slug: string, comment: string, locals: App.Locals }) => {
+    const { data, error } = await POST("/articles/{slug}/comments", {
+        params: {
+            path: {
+                slug: slug
+            }
+        },
+        body: {
+            comment: {
+                body: comment
+            }
+        },
+        headers: createHeadersOptions(locals)
+    })
+    return {
+        article: data?.comment,
+        error: error
+    }
+})
+

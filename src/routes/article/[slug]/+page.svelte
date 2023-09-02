@@ -5,7 +5,7 @@
 	import FollowButton from '$lib/components/molecure/FollowButton.svelte';
 	import ProfileIcon from '$lib/components/molecure/ProfileIcon.svelte';
 
-	import CommentList from '$lib/components/organisms/CommentList.svelte';
+	import CommentList from './CommentList.svelte';
 	import Article from '$lib/components/organisms/Article.svelte';
 
 	import type { PageData } from './$types';
@@ -14,7 +14,7 @@
 	let article = data.article;
 	let comments = data.comments;
 
-	export let owner = false;
+	$: owner = data.user && data.user.username === article?.author.username;
 </script>
 
 <div class="article-page">
@@ -52,6 +52,6 @@
 			</div>
 		</div>
 
-		<CommentList authenticated={!!data.user} {comments} />
+		<CommentList user={data.user} {comments} />
 	</div>
 </div>
