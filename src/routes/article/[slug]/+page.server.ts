@@ -50,7 +50,46 @@ export const actions = {
 
         const response = await deleteArticle({ slug: slug, locals: locals })
         throw redirect(303, `/`)
-    }
+    },
+
+    //いいね、FollowはAPIで実装したほうが良いかも？？
+    addFavolite: async ({ params, locals }) => {
+        const slug = params.slug
+        //FIXME バリデーション
+
+        const response = await addFavolite({ slug: slug, locals: locals })
+    },
+    deleteFavolite: async ({ params, locals }) => {
+        const slug = params.slug
+        //FIXME バリデーション
+
+        const response = await deleteFavolite({ slug: slug, locals: locals })
+    },
+    follow: async ({ locals, url }) => {
+        //FIXME バリデーション
+        const username = url.searchParams.get("username")
+        if (username) {
+            const response = await follow({ username: username, locals: locals })
+            if (response.error) {
+                throw sveltekiterror(500)
+            }
+        } else {
+            throw sveltekiterror(500)
+        }
+    },
+    unfollow: async ({ url, locals }) => {
+        //FIXME バリデーション
+        const username = url.searchParams.get("username")
+        if (username) {
+            const response = await unfollow({ username: username, locals: locals })
+            if (response.error) {
+                throw sveltekiterror(500)
+            }
+        } else {
+            throw sveltekiterror(500)
+        }
+    },
+
 } satisfies Actions
 
 const getArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
@@ -62,8 +101,6 @@ const getArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals 
         },
         headers: createHeadersOptions(locals)
     })
-    // console.log(data)
-    // console.log(error)
     if (error) {
         sveltekiterror(500)
     } else {
@@ -124,5 +161,60 @@ const deleteArticle = (async ({ slug, locals }: { slug: string, locals: App.Loca
         sveltekiterror(500)
     } else {
         return
+    }
+})
+
+const addFavolite = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
+    const { data, error } = await POST("/articles/{slug}/favorite", {
+        params: {
+            path: {
+                slug: slug
+            }
+        },
+        headers: createHeadersOptions(locals)
+    })
+    return {
+        error: error
+    }
+})
+const deleteFavolite = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
+    const { data, error } = await DELETE("/articles/{slug}/favorite", {
+        params: {
+            path: {
+                slug: slug
+            }
+        },
+        headers: createHeadersOptions(locals)
+    })
+    return {
+        error: error
+    }
+})
+
+const follow = (async ({ username, locals }: { username: string, locals: App.Locals }) => {
+    const { data, error } = await POST("/profiles/{username}/follow", {
+        params: {
+            path: {
+                username: username
+            }
+        },
+        headers: createHeadersOptions(locals)
+    })
+    return {
+        error: error
+    }
+})
+
+const unfollow = (async ({ username, locals }: { username: string, locals: App.Locals }) => {
+    const { data, error } = await DELETE("/profiles/{username}/follow", {
+        params: {
+            path: {
+                username: username
+            }
+        },
+        headers: createHeadersOptions(locals)
+    })
+    return {
+        error: error
     }
 })

@@ -9,11 +9,16 @@
 	};
 </script>
 
-<button class="btn btn-sm btn-outline-secondary">
+<button
+	class="btn btn-sm {profile.following ? 'btn-primary' : 'btn-outline-primary'}"
+	formaction="?/{profile.following ? 'unfollow' : 'follow'}&username={profile.username}"
+>
+	<i class="ion-heart" />
+	&nbsp; {profile.following ? 'UnFollow' : 'Follow'}
+	{profile.username}
+</button>
+
+<!-- <button class="btn btn-sm btn-outline-secondary">
 	<i class="ion-plus-round" />
 	&nbsp; Follow {profile.username}
-</button>
-<!-- <button class="btn btn-sm btn-outline-secondary">
-  <i class="ion-plus-round"></i>
-  &nbsp; Follow Eric Simons {#if counter !==null }<span class="counter">({counter})</span>{/if}
 </button> -->

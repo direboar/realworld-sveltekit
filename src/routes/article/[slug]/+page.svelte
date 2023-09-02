@@ -1,8 +1,8 @@
 <script lang="ts">
 	import DeleteArticleButton from './DeleteArticleButton.svelte';
 	import EditArticleButton from '../../../lib/components/molecure/EditArticleButton.svelte';
-	import FaboriteArticleButton from '$lib/components/molecure/FaboriteArticleButton.svelte';
-	import FollowButton from '$lib/components/molecure/FollowButton.svelte';
+	import FaboriteArticleButton from './FaboriteArticleButton.svelte';
+	import FollowButton from './FollowButton.svelte';
 	import ProfileIcon from '$lib/components/molecure/ProfileIcon.svelte';
 
 	import CommentList from './CommentList.svelte';

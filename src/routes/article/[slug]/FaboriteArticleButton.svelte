@@ -21,7 +21,11 @@
 	};
 </script>
 
-<button class="btn btn-sm btn-outline-primary">
+<button
+	class="btn btn-sm {article.favorited ? 'btn-primary' : 'btn-outline-primary'}"
+	formaction="?/{article.favorited ? 'deleteFavolite' : 'addFavolite'}"
+>
 	<i class="ion-heart" />
-	&nbsp; Favorite Post <span class="counter">({article.favoritesCount})</span>
+	&nbsp; {article.favorited ? 'Unfavorite' : 'Favorite'} Post
+	<span class="counter">({article.favoritesCount})</span>
 </button>
