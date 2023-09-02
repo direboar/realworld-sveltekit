@@ -1,11 +1,13 @@
 <script lang="ts">
-	import DeleteArticleButton from '$lib/components/molecure/DeleteArticleButton.svelte';
-	import EditArticleButton from '$lib/components/molecure/EditArticleButton.svelte';
+	import DeleteArticleButton from './DeleteArticleButton.svelte';
+	import EditArticleButton from '../../../lib/components/molecure/EditArticleButton.svelte';
 	import FaboriteArticleButton from '$lib/components/molecure/FaboriteArticleButton.svelte';
 	import FollowButton from '$lib/components/molecure/FollowButton.svelte';
 	import ProfileIcon from '$lib/components/molecure/ProfileIcon.svelte';
 
 	import CommentList from './CommentList.svelte';
+	import CardAction from './CardAction.svelte';
+
 	import Article from '$lib/components/organisms/Article.svelte';
 
 	import type { PageData } from './$types';
@@ -21,16 +23,7 @@
 	<div class="banner">
 		<div class="container">
 			<h1>{article?.title}</h1>
-			<div class="article-meta">
-				<ProfileIcon profile={article?.author} createdAt={article?.createdAt} />
-				<FollowButton profile={article?.author} />
-				&nbsp;&nbsp;
-				<FaboriteArticleButton {article} />
-				{#if owner}
-					<EditArticleButton />
-					<DeleteArticleButton />
-				{/if}
-			</div>
+			<CardAction {article} {owner} />
 		</div>
 	</div>
 
@@ -40,16 +33,7 @@
 		<hr />
 
 		<div class="article-actions">
-			<div class="article-meta">
-				<ProfileIcon profile={article.author} />
-				<FollowButton profile={article.author} />
-				&nbsp;&nbsp;
-				<FaboriteArticleButton {article} />
-				{#if owner}
-					<EditArticleButton />
-					<DeleteArticleButton />
-				{/if}
-			</div>
+			<CardAction {article} {owner} />
 		</div>
 
 		<CommentList user={data.user} {comments} />

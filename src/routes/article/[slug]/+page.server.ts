@@ -6,7 +6,7 @@ import type { paths } from "$lib/api/apitypes";
 
 import { createHeadersOptions } from "$lib/utils/utils"
 
-const { GET, POST } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
+const { GET, POST, DELETE } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 
 export const load = (async ({ params, locals }) => {
     const slug = params.slug
@@ -35,13 +35,21 @@ export const actions = {
             if (response.error) {
                 return response
             } else if (response.article) {
-                throw redirect(303, `/article/${slug}`)
+                return response
+                // throw redirect(303, `/profile/${locals.user.username}`)
             } else {
                 throw sveltekiterror(500)
             }
         } else {
             throw sveltekiterror(400)
         }
+    },
+    deleteArticle: async ({ params, locals }) => {
+        const slug = params.slug
+        //FIXME バリデーション
+
+        const response = await deleteArticle({ slug: slug, locals: locals })
+        throw redirect(303, `/`)
     }
 } satisfies Actions
 
@@ -54,6 +62,8 @@ const getArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals 
         },
         headers: createHeadersOptions(locals)
     })
+    // console.log(data)
+    // console.log(error)
     if (error) {
         sveltekiterror(500)
     } else {
@@ -101,3 +111,18 @@ const postComment = (async ({ slug, comment, locals }: { slug: string, comment: 
     }
 })
 
+const deleteArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
+    const { data, error } = await DELETE("/articles/{slug}", {
+        params: {
+            path: {
+                slug: slug
+            }
+        },
+        headers: createHeadersOptions(locals)
+    })
+    if (error) {
+        sveltekiterror(500)
+    } else {
+        return
+    }
+})

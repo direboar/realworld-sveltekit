@@ -35,7 +35,7 @@ export const actions = {
                 cookies.set("userinfo", btoa(JSON.stringify(response.user)), { httpOnly: true })
                 throw redirect(303, "/")
             } else {
-
+                throw sveltekiterror(500)
             }
         } else {
             throw sveltekiterror(400)

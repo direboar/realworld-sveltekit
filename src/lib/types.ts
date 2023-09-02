@@ -1,3 +1,5 @@
+import type { components } from '$lib/api/apitypes';
+
 export type user = {
     username: string,
     password: string,
@@ -5,3 +7,5 @@ export type user = {
     image: string,
     bio: string
 }
+
+export type article = components['schemas']['Article'] 

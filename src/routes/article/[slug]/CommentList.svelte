@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { enhance } from '$app/forms';
+	// import { enhance } from '$app/forms';
 	import type { components } from '$lib/api/apitypes';
 	import type { user } from '$lib/types';
 	export let comments: components['schemas']['Comment'][] = [
