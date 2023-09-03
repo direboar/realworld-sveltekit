@@ -14,7 +14,16 @@
 	};
 </script>
 
-<form
+<form id="buttons" class="nav-link" method="POST" action="?/toggleFavolite" use:enhance={update}>
+	<input type="hidden" name="favorited" value={article.favorited} />
+	<button class="btn btn-sm {article.favorited ? 'btn-primary' : 'btn-outline-primary'}">
+		<i class="ion-heart" />
+		&nbsp; {article.favorited ? 'Unfavorite' : 'Favorite'} Post
+		<span class="counter">({article.favoritesCount})</span>
+	</button>
+</form>
+
+<!-- <form
 	id="buttons"
 	class="nav-link"
 	method="POST"
@@ -26,4 +35,4 @@
 		&nbsp; {article.favorited ? 'Unfavorite' : 'Favorite'} Post
 		<span class="counter">({article.favoritesCount})</span>
 	</button>
-</form>
+</form> -->

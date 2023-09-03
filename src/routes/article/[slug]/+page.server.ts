@@ -31,7 +31,6 @@ export const actions = {
 
         if (comment) {
             const response = await postComment({ slug: slug, comment: comment, locals: locals })
-            console.log(JSON.stringify(response))
             if (response.error) {
                 return response
             } else if (response.comment) {
@@ -53,64 +52,49 @@ export const actions = {
     },
 
     //いいね、FollowはAPIで実装したほうが良いかも？？
-    addFavolite: async ({ params, locals }) => {
+    toggleFavolite: async ({ request, params, locals }) => {
         const slug = params.slug
         //FIXME バリデーション
+        const data = await request.formData()
+        const favorited = data.get("favorited") as string
 
-        const response = await addFavolite({ slug: slug, locals: locals })
+        let response = null
+        if (favorited === "true") {
+            response = await deleteFavolite({ slug: slug, locals: locals })
+        } else {
+            response = await addFavolite({ slug: slug, locals: locals })
+        }
         if (response.error) {
             return response
         } else if (response.article) {
             return response
-            // throw redirect(303, `/profile/${locals.user.username}`)
         } else {
             throw sveltekiterror(500)
         }
     },
-    deleteFavolite: async ({ params, locals }) => {
+
+    //いいね、FollowはAPIで実装したほうが良いかも？？
+    toggleFollowing: async ({ request, params, locals }) => {
         const slug = params.slug
         //FIXME バリデーション
+        const data = await request.formData()
+        const username = data.get("username") as string
+        const following = data.get("following") as string
 
-        const response = await deleteFavolite({ slug: slug, locals: locals })
+        let response = null
+        if (following === "true") {
+            response = await unfollow({ username: username, locals: locals })
+        } else {
+            response = await follow({ username: username, locals: locals })
+        }
         if (response.error) {
             return response
-        } else if (response.article) {
+        } else if (response.author) {
             return response
-            // throw redirect(303, `/profile/${locals.user.username}`)
         } else {
             throw sveltekiterror(500)
         }
     },
-    follow: async ({ locals, url }) => {
-        //FIXME バリデーション
-        console.log(url)
-        const username = url.searchParams.get("username")
-        if (username) {
-            const response = await follow({ username: username, locals: locals })
-            if (response.error) {
-                throw sveltekiterror(500)
-            } else {
-                return response
-            }
-        } else {
-            throw sveltekiterror(500)
-        }
-    },
-    unfollow: async ({ url, locals }) => {
-        //FIXME バリデーション
-        const username = url.searchParams.get("username")
-        if (username) {
-            const response = await unfollow({ username: username, locals: locals })
-            if (response.error) {
-                throw sveltekiterror(500)
-            } else {
-                return response
-            }
-        } else {
-            throw sveltekiterror(500)
-        }
-    },
-
 } satisfies Actions
 
 const getArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
