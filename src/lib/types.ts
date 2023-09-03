@@ -8,4 +8,5 @@ export type user = {
     bio: string
 }
 
-export type article = components['schemas']['Article'] 
+export type article = components['schemas']['Article']
+export type comment = components['schemas']['Comment']

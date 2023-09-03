@@ -20,6 +20,7 @@
 	};
 </script>
 
+{JSON.stringify(article)}
 <div class="row article-content">
 	<div class="col-md-12">
 		<p>{article.body}</p>

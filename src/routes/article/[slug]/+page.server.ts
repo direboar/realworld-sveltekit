@@ -34,7 +34,7 @@ export const actions = {
             console.log(JSON.stringify(response))
             if (response.error) {
                 return response
-            } else if (response.article) {
+            } else if (response.comment) {
                 return response
                 // throw redirect(303, `/profile/${locals.user.username}`)
             } else {
@@ -58,20 +58,39 @@ export const actions = {
         //FIXME バリデーション
 
         const response = await addFavolite({ slug: slug, locals: locals })
+        if (response.error) {
+            return response
+        } else if (response.article) {
+            return response
+            // throw redirect(303, `/profile/${locals.user.username}`)
+        } else {
+            throw sveltekiterror(500)
+        }
     },
     deleteFavolite: async ({ params, locals }) => {
         const slug = params.slug
         //FIXME バリデーション
 
         const response = await deleteFavolite({ slug: slug, locals: locals })
+        if (response.error) {
+            return response
+        } else if (response.article) {
+            return response
+            // throw redirect(303, `/profile/${locals.user.username}`)
+        } else {
+            throw sveltekiterror(500)
+        }
     },
     follow: async ({ locals, url }) => {
         //FIXME バリデーション
+        console.log(url)
         const username = url.searchParams.get("username")
         if (username) {
             const response = await follow({ username: username, locals: locals })
             if (response.error) {
                 throw sveltekiterror(500)
+            } else {
+                return response
             }
         } else {
             throw sveltekiterror(500)
@@ -84,6 +103,8 @@ export const actions = {
             const response = await unfollow({ username: username, locals: locals })
             if (response.error) {
                 throw sveltekiterror(500)
+            } else {
+                return response
             }
         } else {
             throw sveltekiterror(500)
@@ -143,7 +164,7 @@ const postComment = (async ({ slug, comment, locals }: { slug: string, comment: 
         headers: createHeadersOptions(locals)
     })
     return {
-        article: data?.comment,
+        comment: data?.comment,
         error: error
     }
 })
@@ -174,6 +195,7 @@ const addFavolite = (async ({ slug, locals }: { slug: string, locals: App.Locals
         headers: createHeadersOptions(locals)
     })
     return {
+        article: data?.article,
         error: error
     }
 })
@@ -187,6 +209,7 @@ const deleteFavolite = (async ({ slug, locals }: { slug: string, locals: App.Loc
         headers: createHeadersOptions(locals)
     })
     return {
+        article: data?.article,
         error: error
     }
 })
@@ -201,6 +224,7 @@ const follow = (async ({ username, locals }: { username: string, locals: App.Loc
         headers: createHeadersOptions(locals)
     })
     return {
+        author: data?.profile,
         error: error
     }
 })
@@ -215,6 +239,7 @@ const unfollow = (async ({ username, locals }: { username: string, locals: App.L
         headers: createHeadersOptions(locals)
     })
     return {
+        author: data?.profile,
         error: error
     }
 })

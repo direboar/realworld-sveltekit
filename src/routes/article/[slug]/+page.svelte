@@ -1,20 +1,28 @@
 <script lang="ts">
-	import DeleteArticleButton from './DeleteArticleButton.svelte';
-	import EditArticleButton from '../../../lib/components/molecure/EditArticleButton.svelte';
-	import FaboriteArticleButton from './FaboriteArticleButton.svelte';
-	import FollowButton from './FollowButton.svelte';
-	import ProfileIcon from '$lib/components/molecure/ProfileIcon.svelte';
-
 	import CommentList from './CommentList.svelte';
 	import CardAction from './CardAction.svelte';
-
 	import Article from '$lib/components/organisms/Article.svelte';
 
 	import type { PageData } from './$types';
 	export let data: PageData;
-
 	let article = data.article;
 	let comments = data.comments;
+
+	import { articleStore } from '$lib/store/article';
+	if (article) {
+		articleStore.set(article);
+	}
+	const unsubscribeArticleStore = articleStore.subscribe((value) => {
+		article = value;
+	});
+
+	import { commentsStore } from '$lib/store/comments';
+	if (comments) {
+		commentsStore.set(comments);
+	}
+	const unsubscribeCommentStore = commentsStore.subscribe((value) => {
+		comments = value;
+	});
 
 	$: owner = data.user && data.user.username === article?.author.username;
 </script>

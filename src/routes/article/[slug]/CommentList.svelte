@@ -1,30 +1,25 @@
 <script lang="ts">
-	// import { enhance } from '$app/forms';
-	import type { components } from '$lib/api/apitypes';
+	import { enhance } from '$app/forms';
+	import type { comment } from '$lib/types';
 	import type { user } from '$lib/types';
-	export let comments: components['schemas']['Comment'][] = [
-		{
-			id: 0,
-			createdAt: '2023-08-29T16:39:40.358Z',
-			updatedAt: '2023-08-29T16:39:40.358Z',
-			author: {
-				username: 'string',
-				bio: 'string',
-				image: 'string',
-				following: true
-			},
-			body: 'xxx'
-		}
-	];
+	export let comments: comment[] = [];
+
+	import { addComment } from '$lib/store/comments';
 
 	export let user: user;
+
+	const update: SubmitFunction = () => {
+		return async ({ result, update }) => {
+			addComment(result.data.comment);
+		};
+	};
 </script>
 
 <div>
 	<div class="col-xs-12 col-md-8 offset-md-2">
 		{#if !!user}
 			<div class="card">
-				<form id="button" method="POST" action="?/postComment">
+				<form id="button" method="POST" action="?/postComment" use:enhance={update}>
 					<div class="card-block">
 						<textarea
 							class="form-control"

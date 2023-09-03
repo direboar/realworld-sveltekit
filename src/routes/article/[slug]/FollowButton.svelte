@@ -17,8 +17,3 @@
 	&nbsp; {profile.following ? 'UnFollow' : 'Follow'}
 	{profile.username}
 </button>
-
-<!-- <button class="btn btn-sm btn-outline-secondary">
-	<i class="ion-plus-round" />
-	&nbsp; Follow {profile.username}
-</button> -->
