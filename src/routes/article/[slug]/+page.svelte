@@ -8,11 +8,13 @@
 	let article = data.article;
 	let comments = data.comments;
 
+	//followやlikeの状態を同じ画面の別の個所で管理している。
+	//オブジェクトの引き回しが面倒なため、storeを使用しfollowやlikeをしたらstoreの状態を最新に更新する。
+	//なお、状態の参照はpageからpropsで引き渡す。
 	import { articleStore } from './articlestore';
 	if (article) {
 		articleStore.set(article);
 	}
-
 	articleStore.subscribe((value) => {
 		article = value;
 	});

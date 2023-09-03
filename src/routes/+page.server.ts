@@ -1,16 +1,11 @@
-import { error as sveltekiterror } from '@sveltejs/kit';
 import type { PageServerLoad, Actions } from './$types';
 
-import createClient from "openapi-fetch";
-import type { paths } from "$lib/api/apitypes";
-import { getPageLimit, createHeadersOptions } from '$lib/utils/utils';
-
-const pageLimit = getPageLimit()
-const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
+import * as artcielapi from "$lib/api/article"
+import * as tagsapi from "$lib/api/tags"
 
 export const load = (async ({ params, locals }) => {
-    let articles = await getArticles({ locals: locals })
-    let tags = await getTags(locals)
+    let articles = await artcielapi.getArticles({ locals: locals })
+    let tags = await tagsapi.getTags(locals)
 
     return {
         ...articles,
@@ -25,7 +20,7 @@ export const actions = {
         const value = data.get("value") as string
         const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
-        let articles = await getArticles({ tag: value, page: pageNumber, locals: locals })
+        let articles = await artcielapi.getArticles({ tag: value, page: pageNumber, locals: locals })
         // console.log(articles)
         return {
             ...articles,
@@ -38,53 +33,15 @@ export const actions = {
         const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
         if (value === "Global Feed") {
-            let articles = await getArticles({ page: pageNumber, locals: locals })
+            let articles = await artcielapi.getArticles({ page: pageNumber, locals: locals })
             return {
                 ...articles,
             }
         } else {
-            let articles = await getArticles({ page: pageNumber, author: locals.user.username, locals: locals })
+            let articles = await artcielapi.getArticles({ page: pageNumber, author: locals.user.username, locals: locals })
             return {
                 ...articles,
             }
         }
     }
 } satisfies Actions
-
-const getArticles = (async ({ page, tag, author, locals }: { page?: number, tag?: string, author?: string, locals: App.Locals }) => {
-    if (!page) page = 1
-    const { data, error } = await GET("/articles", {
-        params: {
-            query: {
-                limit: pageLimit,
-                tag: tag,
-                author: author,
-                offset: !page ? undefined : (page - 1) * pageLimit
-            }
-        },
-        headers: createHeadersOptions(locals)
-    })
-    if (error) {
-        sveltekiterror(500)
-    } else {
-        return {
-            articles: data.articles,
-            articlesCount: data.articlesCount,
-            page: page
-        }
-    }
-})
-
-const getTags = (async (locals: App.Locals) => {
-    const { data, error } = await GET("/tags", {
-        params: {
-        },
-        headers: createHeadersOptions(locals)
-    })
-    if (error) {
-        sveltekiterror(500)
-    } else {
-        return data.tags
-    }
-})
-

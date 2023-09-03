@@ -58,8 +58,8 @@
 								profile = e.detail.author;
 							}}
 						/>
-					{/if}
-					{#if data.user && data.user.username === profile.username}
+					{:else}
+					<!-- {#if data.user && data.user.username === profile.username} -->
 						<a class="btn btn-sm btn-outline-secondary action-btn" href="/settings">
 							<i class="ion-gear-a" />
 							&nbsp; Edit Profile Settings

@@ -4,5 +4,5 @@
 </script>
 
 <button class="btn btn-sm btn-outline-secondary" on:click={() => goto(`/editor/${slug}`)}>
-	<i class="ion-edit" /> Edit Article　未実装
+	<i class="ion-edit" /> Edit Article
 </button>

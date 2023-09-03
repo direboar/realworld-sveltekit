@@ -1,12 +1,9 @@
 import { error as sveltekiterror } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
+import type { Actions } from './$types';
 
-import createClient from "openapi-fetch";
-import type { paths } from "$lib/api/apitypes";
 import { fail, redirect } from '@sveltejs/kit';
 
-const { POST } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
-import { createHeadersOptions } from '$lib/utils/utils';
+import * as articleapi from "$lib/api/article"
 
 export const actions = {
     postArticle: async ({ request, cookies, locals }) => {
@@ -21,8 +18,7 @@ export const actions = {
         //FIXME バリデーション
 
         if (title && description && body) {
-            const response = await createArticle({ title: title, description: description, body: body, tagList: tagList, locals: locals })
-            console.log(JSON.stringify(response))
+            const response = await articleapi.createArticle({ title: title, description: description, body: body, tagList: tagList, locals: locals })
             if (response.error) {
                 return fail(422, {
                     error: response.error
@@ -37,22 +33,4 @@ export const actions = {
         }
     }
 } satisfies Actions
-
-const createArticle = (async ({ title, description, body, tagList, locals }: { title: string, description: string, body: string, tagList?: string[], locals: App.Locals }) => {
-    const { data, error } = await POST("/articles", {
-        body: {
-            article: {
-                title: title,
-                description: description,
-                body: body,
-                tagList: tagList
-            }
-        },
-        headers: createHeadersOptions(locals)
-    })
-    return {
-        article: data?.article,
-        error: error
-    }
-})
 

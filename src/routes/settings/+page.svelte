@@ -12,7 +12,6 @@
 			<div class="col-md-6 offset-md-3 col-xs-12">
 				<h1 class="text-xs-center">Your Settings</h1>
 
-				<!-- FIXME サーバのエラーメッセージがいまいち。。。-->
 				<ul class="error-messages">
 					{#if form?.error}
 						<li>{form.error}</li>

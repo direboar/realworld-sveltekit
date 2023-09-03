@@ -13,7 +13,6 @@
 		<a class="navbar-brand" href="/">conduit</a>
 		<ul class="nav navbar-nav pull-xs-right">
 			<li class="nav-item">
-				<!-- Add "active" class when you're on that page" -->
 				<a class="nav-link {$page.url.pathname === '/' ? 'active' : ''}" href="/">Home</a>
 			</li>
 			{#if user}

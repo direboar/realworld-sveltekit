@@ -1,22 +1,9 @@
 import { error as sveltekiterror } from '@sveltejs/kit';
-import type { PageServerLoad, Actions } from './$types';
+import type { Actions } from './$types';
 
-import createClient from "openapi-fetch";
-import type { paths } from "$lib/api/apitypes";
 import { fail, redirect } from '@sveltejs/kit';
 
-const { POST } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
-
-// export const load = (async ({ params }) => {
-//     let articles = await getArticles({})
-//     let tags = await getTags()
-
-//     return {
-//         ...articles,
-//         tags: tags
-//     }
-
-// }) satisfies PageServerLoad
+import * as userapi from "$lib/api/user"
 
 export const actions = {
     createUser: async ({ request, cookies }) => {
@@ -32,7 +19,7 @@ export const actions = {
         // }
 
         if (username && email && password) {
-            const response = await createUser({ username: username, email: email, password: password })
+            const response = await userapi.createUser({ username: username, email: email, password: password })
             if (response.error) {
                 return fail(422, {
                     error: response.error,
@@ -51,20 +38,4 @@ export const actions = {
         }
     }
 } satisfies Actions
-
-const createUser = (async ({ username, email, password }: { username: string, email: string, password: string }) => {
-    const { data, error } = await POST("/users", {
-        body: {
-            user: {
-                username: username,
-                password: password,
-                email: email
-            }
-        }
-    })
-    return {
-        user: data?.user,
-        error: error
-    }
-})
 

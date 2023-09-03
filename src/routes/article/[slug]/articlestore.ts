@@ -21,9 +21,6 @@ const article: article = {
 
 export const articleStore = writable<article>(article);
 export const updateAuthor = (author: article["author"]) => {
-    console.log("---")
-    console.log(author)
-    console.log("---")
     articleStore.update((article) => {
         article.author = author
         return article
