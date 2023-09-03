@@ -1,34 +1,35 @@
 <script lang="ts">
-	import type { components } from '$lib/api/apitypes';
 	import ProfileIcon from '$lib/components/molecure/ProfileIcon.svelte';
-	export let article: components['schemas']['Article'] = {
-		//test data.
-		slug: '',
-		title: 'Try to transmit the HTTP card, maybe it will override the multi-byte hard drive!',
-		description:
-			'Assumenda molestiae laboriosam enim ipsum quaerat enim officia vel quo. Earum odit rem natus totam atque cumque. Sint dolorem facere non.',
-		body: '',
-		tagList: ['realworld', 'implementations'],
-		createdAt: 'January 20th',
-		updatedAt: '',
-		favorited: true,
-		favoritesCount: 29,
-		author: {
-			username: 'Eric Simons',
-			bio: '',
-			following: false,
-			image: 'https://api.realworld.io/images/demo-avatar.png'
-		}
+
+	import type { article } from '$lib/types';
+	export let article: article;
+
+	import { enhance } from '$app/forms';
+	import type { SubmitFunction } from '@sveltejs/kit';
+	const update: SubmitFunction = () => {
+		return async ({ result }) => {
+			if (result.status === 200) {
+				article = result.data.article;
+			}
+		};
 	};
 </script>
 
 <div class="article-preview">
 	<div class="article-meta">
 		<ProfileIcon profile={article.author} createdAt={article.createdAt} />
-		<button class="btn btn-outline-primary btn-sm pull-xs-right">
-			<i class="ion-heart" />
-			{article.favoritesCount}
-		</button>
+		<form
+			id="button"
+			method="POST"
+			action="/article/{article.slug}?/toggleFavolite"
+			use:enhance={update}
+		>
+			<input type="hidden" name="favorited" value={article.favorited} />
+			<button class="btn btn-outline-primary btn-sm pull-xs-right">
+				<i class="ion-heart" />
+				{article.favoritesCount}
+			</button>
+		</form>
 	</div>
 	<a href="/article/{article.slug}" class="preview-link">
 		<h1>{article.title}</h1>

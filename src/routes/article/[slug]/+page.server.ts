@@ -57,6 +57,8 @@ export const actions = {
         //FIXME バリデーション
         const data = await request.formData()
         const favorited = data.get("favorited") as string
+        console.log(slug)
+        console.log(favorited)
 
         let response = null
         if (favorited === "true") {

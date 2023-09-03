@@ -9,6 +9,7 @@
 	export let user: user;
 	let comment = '';
 
+	import type { SubmitFunction } from '@sveltejs/kit';
 	const update: SubmitFunction = () => {
 		return async ({ result, update }) => {
 			if (result.data && result.data.comment) {
