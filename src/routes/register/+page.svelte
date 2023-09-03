@@ -1,7 +1,7 @@
 <script lang="ts">
+	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
 	export let form: ActionData;
-	let { error } = { ...form };
 </script>
 
 <div class="auth-page">
@@ -14,16 +14,16 @@
 				</p>
 
 				<ul class="error-messages">
-					{#if error}
-						{#each Object.keys(error.errors) as key}
-							{#each error.errors[key] as message}
+					{#if form?.error}
+						{#each Object.keys(form?.error.errors) as key}
+							{#each form?.error.errors[key] as message}
 								<li>{key} {message}</li>
 							{/each}
 						{/each}
 					{/if}
 				</ul>
 
-				<form id="button" method="POST" action="?/createUser">
+				<form id="button" method="POST" action="?/createUser" use:enhance>
 					<fieldset class="form-group">
 						<input
 							class="form-control form-control-lg"

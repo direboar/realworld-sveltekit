@@ -1,9 +1,9 @@
 <script lang="ts">
 	import type { PageData, ActionData } from './$types';
-	export let data: PageData;
+	import { enhance } from '$app/forms';
 
+	export let data: PageData;
 	export let form: ActionData;
-	let { error } = { ...form };
 </script>
 
 <div class="settings-page">
@@ -14,12 +14,12 @@
 
 				<!-- FIXME サーバのエラーメッセージがいまいち。。。-->
 				<ul class="error-messages">
-					{#if error}
-						<li>{error}</li>
+					{#if form?.error}
+						<li>{form.error}</li>
 					{/if}
 				</ul>
 
-				<form id="update" method="POST" action="?/update">
+				<form id="update" method="POST" action="?/update" use:enhance>
 					<fieldset>
 						<fieldset class="form-group">
 							<input

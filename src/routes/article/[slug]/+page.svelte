@@ -17,14 +17,6 @@
 		article = value;
 	});
 
-	// import { commentsStore } from './commentsstore';
-	// if (comments) {
-	// 	commentsStore.set(comments);
-	// }
-	// commentsStore.subscribe((value) => {
-	// 	comments = value;
-	// });
-
 	$: owner = data.user && data.user.username === article?.author.username;
 </script>
 

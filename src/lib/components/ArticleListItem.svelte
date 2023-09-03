@@ -30,7 +30,7 @@
 			use:enhance={update}
 		>
 			<input type="hidden" name="favorited" value={favorited} />
-			<button class="btn btn-outline-primary btn-sm pull-xs-right">
+			<button class="btn btn-sm pull-xs-right {favorited ? 'btn-primary' : 'btn-outline-primary'}">
 				<i class="ion-heart" />
 				{favoritesCount}
 			</button>

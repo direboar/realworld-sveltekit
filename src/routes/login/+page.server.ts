@@ -10,7 +10,6 @@ const { POST } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" }
 export const actions = {
     login: async ({ request, cookies }) => {
         const data = await request.formData()
-        console.log(data)
         const email = data.get("email") as string
         const password = data.get("password") as string
 
@@ -22,7 +21,7 @@ export const actions = {
         if (email && password) {
             const response = await createUser({ email: email, password: password })
             if (response.error) {
-                return response
+                return fail(422, { error: response.error })
             } else if (response.user) {
                 cookies.set("userinfo", btoa(JSON.stringify(response.user)), { httpOnly: true })
                 throw redirect(303, "/")

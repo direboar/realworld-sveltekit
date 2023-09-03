@@ -29,7 +29,8 @@ export const actions = {
         if (username && email && image) {
             const response = await updateUser({ username: username, email: email, password: password, image: image, bio: bio, locals: locals })
             if (response.error) {
-                return response
+                return fail(422, { error: response.error })
+                // return response
             } else if (response.user) {
                 //FIXME :Utilityで共通化
                 cookies.set("userinfo", btoa(JSON.stringify(response.user)), { httpOnly: true })

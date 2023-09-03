@@ -7,15 +7,11 @@
 
 	import { updateArticle } from './articlestore';
 
-	// let favorited = article.favorited;
-	// let favoritesCount = article.favoritesCount;
 	const update: SubmitFunction = () => {
 		return async ({ result }) => {
 			if (result.data?.article) {
 				console.log(result.data.article);
 				updateArticle(result.data?.article);
-				// favorited = result.data.article.favorited;
-				// favoritesCount = result.data.article.favoritesCount;
 			}
 		};
 	};

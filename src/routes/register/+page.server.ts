@@ -34,7 +34,12 @@ export const actions = {
         if (username && email && password) {
             const response = await createUser({ username: username, email: email, password: password })
             if (response.error) {
-                return response
+                return fail(422, {
+                    error: response.error,
+                    username: username,
+                    email: email,
+                    password: password,
+                })
             } else if (response.user) {
                 cookies.set("userinfo", btoa(JSON.stringify(response.user)), { httpOnly: true })
                 throw redirect(303, "/")

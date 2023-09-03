@@ -35,10 +35,11 @@ export const actions = {
             const response = await createArticle({ title: title, description: description, body: body, tagList: tagList, locals: locals })
             console.log(JSON.stringify(response))
             if (response.error) {
-                return response
+                return fail(422, {
+                    error: response.error
+                })
             } else if (response.article) {
                 throw redirect(303, `/article/${response.article.slug}`)
-
                 // throw redirect(303, `/profile/${locals.user.username}`)
             } else {
                 throw sveltekiterror(500)

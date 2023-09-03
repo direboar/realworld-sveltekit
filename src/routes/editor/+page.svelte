@@ -1,8 +1,9 @@
 <script lang="ts">
 	// import Editor from './Editor.svelte';
+	import { enhance } from '$app/forms';
 	import type { ActionData } from './$types';
+
 	export let form: ActionData;
-	let { error, article } = { ...form };
 
 	let tag = '';
 	let tags: Set<string> = new Set([]);
@@ -21,21 +22,22 @@
 	};
 </script>
 
+<!-- use:enhanceでサーバ側で更新したデータを取得するためには、formの値を直接使用する。（local変数に代入してしまうと追跡できなくなる） -->
 <div class="editor-page">
 	<div class="container page">
 		<div class="row">
 			<div class="col-md-10 offset-md-1 col-xs-12">
 				<ul class="error-messages">
-					{#if error}
-						{#each Object.keys(error.errors) as key}
-							{#each error.errors[key] as message}
+					{#if form?.error}
+						{#each Object.keys(form?.error.errors) as key}
+							{#each form?.error.errors[key] as message}
 								<li>{key} {message}</li>
 							{/each}
 						{/each}
 					{/if}
 				</ul>
 
-				<form id="button" method="POST" action="?/postArticle">
+				<form id="button" method="POST" action="?/postArticle" use:enhance>
 					<fieldset>
 						<fieldset class="form-group">
 							<input
