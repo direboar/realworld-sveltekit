@@ -23,6 +23,6 @@
 	<link rel="stylesheet" href="//demo.productionready.io/main.css" />
 </svelte:head>
 
-<Header authenticated={!!data.user} username={data.user?.username} />
+<Header user={data.user} />
 <slot />
 <Footer />

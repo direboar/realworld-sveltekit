@@ -8,7 +8,6 @@
 	import { createEventDispatcher } from 'svelte';
 	const dispatch = createEventDispatcher();
 
-	// import { updateAuthor } from './articlestore';
 	const update: SubmitFunction = () => {
 		return async ({ result, update }) => {
 			if (result.data?.author) {

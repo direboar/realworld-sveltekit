@@ -1,14 +1,9 @@
 <script lang="ts">
-	import type { components } from '$lib/api/apitypes';
+	import type { article } from '$lib/types';
 	import { formatDate } from '$lib/utils/utils';
-	export let profile: components['schemas']['Profile'] = {
-		//test data.
-		username: 'Eric Simons',
-		bio: 'xxx',
-		following: false,
-		image: 'https://api.realworld.io/images/demo-avatar.png'
-	};
-	export let createdAt: string = 'xxx';
+
+	export let profile: article['author'];
+	export let createdAt: string;
 </script>
 
 <a href="/profile/{profile.username}"><img src={profile.image} /></a>
