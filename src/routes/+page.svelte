@@ -2,7 +2,7 @@
 	import { enhance } from '$app/forms';
 	import type { PageData } from './$types';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
+	import ArticleList from '$lib/components/ArticleList.svelte';
 
 	import { getPageLimit } from '$lib/utils/utils';
 

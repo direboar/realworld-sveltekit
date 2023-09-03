@@ -1,5 +1,5 @@
 <script lang="ts">
-	import Article from '$lib/components/organisms/Article.svelte';
+	import Article from '$lib/components/Article.svelte';
 	import CardAction from './CardAction.svelte';
 	import CommentList from './CommentList.svelte';
 

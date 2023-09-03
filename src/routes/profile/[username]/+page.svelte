@@ -3,8 +3,8 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import { enhance } from '$app/forms';
 
-	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
-	// import FollowButton from '$lib/components/molecure/FollowButton.svelte';
+	import ArticleList from '$lib/components/ArticleList.svelte';
+	import FollowButton from '$lib/components/FollowButton.svelte';
 
 	import { getPageLimit } from '$lib/utils/utils';
 	const pageLimit = getPageLimit();
@@ -52,17 +52,12 @@
 					<h4>{profile.username}</h4>
 					<p>{profile.bio ? profile.bio : ''}</p>
 					{#if !data.user || data.user.username !== profile.username}
-						<!-- <FollowButton {profile} /> -->
-						<!-- <FollowButton
+						<FollowButton
 							{profile}
-							handler={(prof) => {
-								alert(prof);
+							on:updateAuthor={(e) => {
+								profile = e.detail.author;
 							}}
-						/> -->
-						<button class="btn btn-sm btn-outline-secondary action-btn">
-							<i class="ion-plus-round" />
-							&nbsp; Follow {profile.username} 未実装
-						</button>
+						/>
 					{/if}
 					{#if data.user && data.user.username === profile.username}
 						<a class="btn btn-sm btn-outline-secondary action-btn" href="/settings">

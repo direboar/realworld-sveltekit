@@ -5,12 +5,17 @@
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 
-	import { updateAuthor } from './articlestore';
+	import { createEventDispatcher } from 'svelte';
+	const dispatch = createEventDispatcher();
+
+	// import { updateAuthor } from './articlestore';
 	const update: SubmitFunction = () => {
 		return async ({ result, update }) => {
-			console.log(result.data);
 			if (result.data?.author) {
-				updateAuthor(result.data?.author);
+				let pProfile = result.data?.author as article['author'];
+				dispatch('updateAuthor', {
+					author: pProfile
+				});
 			}
 		};
 	};

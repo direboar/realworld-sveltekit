@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Header from '$lib/components/organisms/Header.svelte';
-	import Footer from '$lib/components/organisms/Footer.svelte';
+	import Header from './Header.svelte';
+	import Footer from './Footer.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
 </script>

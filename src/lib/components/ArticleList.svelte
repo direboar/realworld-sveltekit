@@ -1,6 +1,6 @@
 <script lang="ts">
 	import type { components } from '$lib/api/apitypes';
-	import ArticleListItem from '$lib/components/molecure/ArticleListItem.svelte';
+	import ArticleListItem from '$lib/components/ArticleListItem.svelte';
 	export let articles: components['schemas']['Article'][] = [
 		{
 			slug: '',

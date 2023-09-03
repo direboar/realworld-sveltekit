@@ -1,5 +1,5 @@
 <script lang="ts">
-	import ProfileIcon from '$lib/components/molecure/ProfileIcon.svelte';
+	import ProfileIcon from '$lib/components/ProfileIcon.svelte';
 
 	import type { article } from '$lib/types';
 	export let article: article;
