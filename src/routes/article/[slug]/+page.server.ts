@@ -49,7 +49,7 @@ export const actions = {
         //FIXME バリデーション
 
         const response = await deleteArticle({ slug: slug, locals: locals })
-        throw redirect(303, `/`)
+        // throw redirect(303, `/`)
     },
 
     //いいね、FollowはAPIで実装したほうが良いかも？？
@@ -170,7 +170,7 @@ const postComment = (async ({ slug, comment, locals }: { slug: string, comment: 
 })
 
 const deleteArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
-    const { data, error } = await DELETE("/articles/{slug}", {
+    const { error } = await DELETE("/articles/{slug}", {
         params: {
             path: {
                 slug: slug

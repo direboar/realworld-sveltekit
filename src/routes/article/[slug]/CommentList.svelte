@@ -7,10 +7,14 @@
 	import { addComment } from '$lib/store/comments';
 
 	export let user: user;
+	let comment = '';
 
 	const update: SubmitFunction = () => {
 		return async ({ result, update }) => {
-			addComment(result.data.comment);
+			if (result.data && result.data.comment) {
+				addComment(result.data.comment);
+				comment = '';
+			}
 		};
 	};
 </script>
@@ -26,6 +30,7 @@
 							placeholder="Write a comment..."
 							rows="3"
 							name="comment"
+							bind:value={comment}
 							required
 						/>
 					</div>
