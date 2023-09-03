@@ -3,18 +3,20 @@ import type { paths } from "$lib/api/apitypes";
 const { GET, POST, DELETE, PUT } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 import { createHeadersOptions, getPageLimit } from '$lib/utils/utils';
 import { error as sveltekiterror } from '@sveltejs/kit';
+import { getTags } from "./tags";
 
 const pageLimit = getPageLimit()
 
-export const getArticles = (async ({ page, author, favoritedUsername, locals }: { page?: number, author?: string, favoritedUsername?: string, locals: App.Locals }) => {
+export const getArticles = (async ({ page, author, favoritedUsername, tag, locals }: { page?: number, author?: string, favoritedUsername?: string, tag?: string, locals: App.Locals }) => {
     if (!page) page = 1
     const { data, error } = await GET("/articles", {
         params: {
             query: {
-                limit: pageLimit,
+                tag: tag,
                 author: author,
                 favorited: favoritedUsername,
-                offset: !page ? undefined : (page - 1) * pageLimit
+                offset: !page ? undefined : (page - 1) * pageLimit,
+                limit: pageLimit,
             }
         },
         headers: createHeadersOptions(locals)
