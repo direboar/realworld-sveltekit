@@ -75,28 +75,28 @@ export const actions = {
         }
     },
 
-    //いいね、FollowはAPIで実装したほうが良いかも？？
-    toggleFollowing: async ({ request, params, locals }) => {
-        const slug = params.slug
-        //FIXME バリデーション
-        const data = await request.formData()
-        const username = data.get("username") as string
-        const following = data.get("following") as string
+    // //いいね、FollowはAPIで実装したほうが良いかも？？
+    // toggleFollowing: async ({ request, params, locals }) => {
+    //     const slug = params.slug
+    //     //FIXME バリデーション
+    //     const data = await request.formData()
+    //     const username = data.get("username") as string
+    //     const following = data.get("following") as string
 
-        let response = null
-        if (following === "true") {
-            response = await unfollow({ username: username, locals: locals })
-        } else {
-            response = await follow({ username: username, locals: locals })
-        }
-        if (response.error) {
-            return response
-        } else if (response.author) {
-            return response
-        } else {
-            throw sveltekiterror(500)
-        }
-    },
+    //     let response = null
+    //     if (following === "true") {
+    //         response = await unfollow({ username: username, locals: locals })
+    //     } else {
+    //         response = await follow({ username: username, locals: locals })
+    //     }
+    //     if (response.error) {
+    //         return response
+    //     } else if (response.author) {
+    //         return response
+    //     } else {
+    //         throw sveltekiterror(500)
+    //     }
+    // },
 } satisfies Actions
 
 const getArticle = (async ({ slug, locals }: { slug: string, locals: App.Locals }) => {
@@ -200,32 +200,32 @@ const deleteFavolite = (async ({ slug, locals }: { slug: string, locals: App.Loc
     }
 })
 
-const follow = (async ({ username, locals }: { username: string, locals: App.Locals }) => {
-    const { data, error } = await POST("/profiles/{username}/follow", {
-        params: {
-            path: {
-                username: username
-            }
-        },
-        headers: createHeadersOptions(locals)
-    })
-    return {
-        author: data?.profile,
-        error: error
-    }
-})
+// const follow = (async ({ username, locals }: { username: string, locals: App.Locals }) => {
+//     const { data, error } = await POST("/profiles/{username}/follow", {
+//         params: {
+//             path: {
+//                 username: username
+//             }
+//         },
+//         headers: createHeadersOptions(locals)
+//     })
+//     return {
+//         author: data?.profile,
+//         error: error
+//     }
+// })
 
-const unfollow = (async ({ username, locals }: { username: string, locals: App.Locals }) => {
-    const { data, error } = await DELETE("/profiles/{username}/follow", {
-        params: {
-            path: {
-                username: username
-            }
-        },
-        headers: createHeadersOptions(locals)
-    })
-    return {
-        author: data?.profile,
-        error: error
-    }
-})
+// const unfollow = (async ({ username, locals }: { username: string, locals: App.Locals }) => {
+//     const { data, error } = await DELETE("/profiles/{username}/follow", {
+//         params: {
+//             path: {
+//                 username: username
+//             }
+//         },
+//         headers: createHeadersOptions(locals)
+//     })
+//     return {
+//         author: data?.profile,
+//         error: error
+//     }
+// })

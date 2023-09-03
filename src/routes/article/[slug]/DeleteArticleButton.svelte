@@ -4,7 +4,6 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	const update: SubmitFunction = () => {
 		return async ({ result }) => {
-			console.log(result.status);
 			if (result.status === 204) {
 				//204 : no content
 				goto('/');

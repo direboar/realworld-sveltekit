@@ -4,12 +4,17 @@
 	import { enhance } from '$app/forms';
 
 	import ArticleList from '$lib/components/organisms/ArticleList.svelte';
-	import { getPageLimit } from '$lib/utils/utils';
+	// import FollowButton from '$lib/components/molecure/FollowButton.svelte';
 
+	import { getPageLimit } from '$lib/utils/utils';
 	const pageLimit = getPageLimit();
 
 	export let data: PageData;
-	let { articles, articlesCount, profile } = { ...data };
+	import type { article } from '$lib/types';
+
+	let articles: article[] = data.articles;
+	let articlesCount: number = data.articlesCount;
+	let profile: article['author'] = data.profile;
 
 	let currentTab = 'My Articles'; //Your Feed or tags
 	let currentPage = 1;
@@ -47,9 +52,16 @@
 					<h4>{profile.username}</h4>
 					<p>{profile.bio ? profile.bio : ''}</p>
 					{#if !data.user || data.user.username !== profile.username}
+						<!-- <FollowButton {profile} /> -->
+						<!-- <FollowButton
+							{profile}
+							handler={(prof) => {
+								alert(prof);
+							}}
+						/> -->
 						<button class="btn btn-sm btn-outline-secondary action-btn">
 							<i class="ion-plus-round" />
-							&nbsp; Follow {profile.username}
+							&nbsp; Follow {profile.username} 未実装
 						</button>
 					{/if}
 					{#if data.user && data.user.username === profile.username}

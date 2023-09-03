@@ -4,11 +4,18 @@
 
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
-	import { articleStore, updateAuthor } from '$lib/store/article';
+
+	import { updateArticle } from './articlestore';
+
+	// let favorited = article.favorited;
+	// let favoritesCount = article.favoritesCount;
 	const update: SubmitFunction = () => {
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			if (result.data?.article) {
-				articleStore.set(result.data?.article);
+				console.log(result.data.article);
+				updateArticle(result.data?.article);
+				// favorited = result.data.article.favorited;
+				// favoritesCount = result.data.article.favoritesCount;
 			}
 		};
 	};
@@ -22,17 +29,3 @@
 		<span class="counter">({article.favoritesCount})</span>
 	</button>
 </form>
-
-<!-- <form
-	id="buttons"
-	class="nav-link"
-	method="POST"
-	action="?/{article.favorited ? 'deleteFavolite' : 'addFavolite'}"
-	use:enhance={update}
->
-	<button class="btn btn-sm {article.favorited ? 'btn-primary' : 'btn-outline-primary'}">
-		<i class="ion-heart" />
-		&nbsp; {article.favorited ? 'Unfavorite' : 'Favorite'} Post
-		<span class="counter">({article.favoritesCount})</span>
-	</button>
-</form> -->

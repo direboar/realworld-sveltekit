@@ -4,8 +4,6 @@
 	import type { user } from '$lib/types';
 	export let comments: comment[] = [];
 
-	import { addComment } from '$lib/store/comments';
-
 	export let user: user;
 	let comment = '';
 
@@ -13,7 +11,7 @@
 	const update: SubmitFunction = () => {
 		return async ({ result, update }) => {
 			if (result.data && result.data.comment) {
-				addComment(result.data.comment);
+				comments = [...comments, result.data.comment];
 				comment = '';
 			}
 		};

@@ -9,10 +9,15 @@
 	const update: SubmitFunction = () => {
 		return async ({ result }) => {
 			if (result.status === 200) {
-				article = result.data.article;
+				const pArticle = result.data.article;
+				favorited = pArticle.favorited;
+				favoritesCount = pArticle.favoritesCount;
 			}
 		};
 	};
+
+	let favorited = article.favorited;
+	let favoritesCount = article.favoritesCount;
 </script>
 
 <div class="article-preview">
@@ -24,10 +29,10 @@
 			action="/article/{article.slug}?/toggleFavolite"
 			use:enhance={update}
 		>
-			<input type="hidden" name="favorited" value={article.favorited} />
+			<input type="hidden" name="favorited" value={favorited} />
 			<button class="btn btn-outline-primary btn-sm pull-xs-right">
 				<i class="ion-heart" />
-				{article.favoritesCount}
+				{favoritesCount}
 			</button>
 		</form>
 	</div>
