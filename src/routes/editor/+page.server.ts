@@ -8,17 +8,6 @@ import { fail, redirect } from '@sveltejs/kit';
 const { POST } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 import { createHeadersOptions } from '$lib/utils/utils';
 
-// export const load = (async ({ params }) => {
-//     let articles = await getArticles({})
-//     let tags = await getTags()
-
-//     return {
-//         ...articles,
-//         tags: tags
-//     }
-
-// }) satisfies PageServerLoad
-
 export const actions = {
     postArticle: async ({ request, cookies, locals }) => {
         const data = await request.formData()
@@ -40,7 +29,6 @@ export const actions = {
                 })
             } else if (response.article) {
                 throw redirect(303, `/article/${response.article.slug}`)
-                // throw redirect(303, `/profile/${locals.user.username}`)
             } else {
                 throw sveltekiterror(500)
             }

@@ -25,7 +25,7 @@
 	&nbsp;&nbsp;
 	<FaboriteArticleButton {article} />
 	{#if owner}
-		<EditArticleButton />
+		<EditArticleButton slug={article.slug} />
 		<DeleteArticleButton />
 	{/if}
 </div>
