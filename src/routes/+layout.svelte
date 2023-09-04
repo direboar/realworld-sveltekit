@@ -3,6 +3,9 @@
 	import Footer from './Footer.svelte';
 	import type { PageData } from './$types';
 	export let data: PageData;
+
+	// import { setContext } from 'svelte';
+	// setContext('user', data.user);
 </script>
 
 <svelte:head>

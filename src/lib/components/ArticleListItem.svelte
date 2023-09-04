@@ -3,11 +3,15 @@
 
 	import type { article } from '$lib/types';
 	export let article: article;
+	import { goto } from '$app/navigation';
 
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 	const update: SubmitFunction = () => {
 		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				goto(result.location);
+			}
 			if (result.status === 200) {
 				const pArticle = result.data.article;
 				favorited = pArticle.favorited;

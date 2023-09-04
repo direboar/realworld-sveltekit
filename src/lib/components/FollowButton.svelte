@@ -6,10 +6,14 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 
 	import { createEventDispatcher } from 'svelte';
+	import { goto } from '$app/navigation';
 	const dispatch = createEventDispatcher();
 
 	const update: SubmitFunction = () => {
 		return async ({ result, update }) => {
+			if (result.type === 'redirect') {
+				goto(result.location);
+			}
 			if (result.data?.author) {
 				let pProfile = result.data?.author as article['author'];
 				dispatch('updateAuthor', {

@@ -1,5 +1,5 @@
 import type { PageServerLoad, Actions } from './$types';
-import { error as sveltekiterror } from '@sveltejs/kit';
+import { error as sveltekiterror, redirect } from '@sveltejs/kit';
 
 import * as profilesapi from "$lib/api/profiles"
 import * as articleapi from "$lib/api/article"
@@ -42,6 +42,10 @@ export const actions = {
     },
     //いいね、FollowはAPIで実装したほうが良いかも？？
     toggleFollowing: async ({ request, params, locals }) => {
+        if (!locals.user) {
+            throw redirect(307, '/login');
+        }
+
         const slug = params.slug
         //FIXME バリデーション
         const data = await request.formData()

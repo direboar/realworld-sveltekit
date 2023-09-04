@@ -47,6 +47,9 @@ export const actions = {
 
     //いいね、FollowはAPIで実装したほうが良いかも？？
     toggleFavolite: async ({ request, params, locals }) => {
+        if (!locals.user) {
+            throw redirect(307, '/login');
+        }
         const slug = params.slug
         //FIXME バリデーション
         const data = await request.formData()

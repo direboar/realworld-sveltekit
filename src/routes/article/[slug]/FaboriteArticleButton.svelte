@@ -1,6 +1,7 @@
 <script lang="ts">
 	import type { article } from '$lib/types';
 	export let article: article;
+	import { goto } from '$app/navigation';
 
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
@@ -11,8 +12,10 @@
 
 	const update: SubmitFunction = () => {
 		return async ({ result }) => {
+			if (result.type === 'redirect') {
+				goto(result.location);
+			}
 			if (result.data?.article) {
-				console.log(result.data.article);
 				store.updateArticle(result.data?.article);
 			}
 		};
