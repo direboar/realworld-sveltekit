@@ -5,13 +5,15 @@
 	import { enhance } from '$app/forms';
 	import type { SubmitFunction } from '@sveltejs/kit';
 
-	import { updateArticle } from './articlestore';
+	import { ArticleStore } from './articlestore';
+
+	const store = ArticleStore.getStore();
 
 	const update: SubmitFunction = () => {
 		return async ({ result }) => {
 			if (result.data?.article) {
 				console.log(result.data.article);
-				updateArticle(result.data?.article);
+				store.updateArticle(result.data?.article);
 			}
 		};
 	};

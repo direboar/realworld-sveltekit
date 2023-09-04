@@ -6,10 +6,11 @@
 	import ProfileIcon from '$lib/components/ProfileIcon.svelte';
 	import type { article } from '$lib/types';
 
-	import { updateAuthor } from './articlestore';
+	import { ArticleStore } from './articlestore';
 
 	export let article: article;
 	export let owner: boolean;
+	const store = ArticleStore.getStore();
 </script>
 
 <div class="article-meta">
@@ -18,7 +19,7 @@
 		<FollowButton
 			profile={article?.author}
 			on:updateAuthor={(e) => {
-				updateAuthor(e.detail.author);
+				store.updateAuthor(e.detail.author);
 			}}
 		/>
 	{/if}
