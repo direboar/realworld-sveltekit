@@ -6,9 +6,6 @@
 	import ArticleList from '$lib/components/ArticleList.svelte';
 	import FollowButton from '$lib/components/FollowButton.svelte';
 
-	import { getPageLimit } from '$lib/utils/utils';
-	const pageLimit = getPageLimit();
-
 	export let data: PageData;
 	import type { article } from '$lib/types';
 
@@ -18,14 +15,12 @@
 
 	let currentTab = 'My Articles'; //Your Feed or tags
 	let currentPage = 1;
-	$: totalPage = articlesCount ? Math.ceil(articlesCount / pageLimit) : 0;
-
 	let nowLoading = false;
 	let pagenation = false;
 
 	const updateFormResult: SubmitFunction = () => {
 		nowLoading = true;
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			articles = result.data.articles;
 			articlesCount = result.data.articlesCount;
 			currentPage = result.data.page;
@@ -34,7 +29,7 @@
 	};
 	const updateFormResultPagenation: SubmitFunction = () => {
 		pagenation = true;
-		return async ({ result, update }) => {
+		return async ({ result }) => {
 			articles = result.data.articles;
 			articlesCount = result.data.articlesCount;
 			currentPage = result.data.page;
@@ -59,7 +54,6 @@
 							}}
 						/>
 					{:else}
-					<!-- {#if data.user && data.user.username === profile.username} -->
 						<a class="btn btn-sm btn-outline-secondary action-btn" href="/settings">
 							<i class="ion-gear-a" />
 							&nbsp; Edit Profile Settings
@@ -99,35 +93,16 @@
 						</ul>
 					</form>
 				</div>
-				{#if nowLoading}
-					<div class="article-preview">
-						<p>Loading Articles...</p>
-					</div>
-				{:else}
-					<ArticleList {articles} />
-				{/if}
-				{#if pagenation}
-					<div class="article-preview">
-						<p>Loading Articles...</p>
-					</div>
-				{/if}
-
-				<ul class="pagination">
-					<form
-						id="button"
-						method="POST"
-						action="?/displayFeed"
-						use:enhance={updateFormResultPagenation}
-					>
-						<input type="hidden" name="value" value={currentTab} />
-
-						{#each Array(totalPage) as _, i}
-							<li class="page-item {currentPage === i + 1 ? 'active' : ''}">
-								<button class="page-link" name="page" value={i + 1}>{i + 1} </button>
-							</li>
-						{/each}
-					</form>
-				</ul>
+				<ArticleList
+					{articles}
+					{articlesCount}
+					{currentTab}
+					{nowLoading}
+					{pagenation}
+					{currentPage}
+					{updateFormResultPagenation}
+					action="displayFeed"
+				/>
 			</div>
 		</div>
 	</div>

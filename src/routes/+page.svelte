@@ -4,11 +4,7 @@
 	import type { SubmitFunction } from '@sveltejs/kit';
 	import ArticleList from '$lib/components/ArticleList.svelte';
 
-	import { getPageLimit } from '$lib/utils/utils';
-
 	export let data: PageData;
-
-	const pageLimit = getPageLimit();
 
 	let articles = data.articles;
 	let articlesCount = data.articlesCount;
@@ -16,7 +12,6 @@
 
 	let currentTab = 'Global Feed'; //Your Feed or tags
 	let currentPage = 1;
-	$: totalPage = articlesCount ? Math.ceil(articlesCount / pageLimit) : 0;
 
 	let nowLoading = false;
 	let pagenation = false;
@@ -81,34 +76,16 @@
 						</ul>
 					</form>
 				</div>
-				{#if nowLoading}
-					<div class="article-preview">
-						<p>Loading Articles...</p>
-					</div>
-				{:else}
-					<ArticleList {articles} />
-					{#if pagenation}
-						<div class="article-preview">
-							<p>Loading Articles...</p>
-						</div>
-					{/if}
-					<ul class="pagination">
-						<form
-							id="button"
-							method="POST"
-							action="?/{currentTab.endsWith('Feed') ? 'displayFeed' : 'displayTag'}"
-							use:enhance={updateFormResultPagenation}
-						>
-							<input type="hidden" name="value" value={currentTab} />
-
-							{#each Array(totalPage) as _, i}
-								<li class="page-item {currentPage === i + 1 ? 'active' : ''}">
-									<button class="page-link" name="page" value={i + 1}>{i + 1} </button>
-								</li>
-							{/each}
-						</form>
-					</ul>
-				{/if}
+				<ArticleList
+					{articles}
+					{articlesCount}
+					{currentTab}
+					{nowLoading}
+					{pagenation}
+					{currentPage}
+					{updateFormResultPagenation}
+					action={currentTab.endsWith('Feed') ? 'displayFeed' : 'displayTag'}
+				/>
 			</div>
 
 			<div class="col-md-3">

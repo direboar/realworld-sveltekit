@@ -17,7 +17,7 @@ export const load = (async ({ params, locals }) => {
 export const actions = {
     displayTag: async ({ request, locals }) => {
         const data = await request.formData()
-        const value = data.get("value") as string
+        const value = data.get("value") as string // 取得対象タグ名
         const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
         let articles = await artcielapi.getArticles({ tag: value, page: pageNumber, locals: locals })
@@ -27,9 +27,8 @@ export const actions = {
         }
     },
     displayFeed: async ({ request, locals }) => {
-        console.log(locals)
         const data = await request.formData()
-        const value = data.get("value") as string
+        const value = data.get("value") as string // 取得対象投稿名（GlobalFeed/YourFeed)
         const page = data.get("page") as string
         const pageNumber = page ? Number(page) : undefined
         if (value === "Global Feed") {
@@ -37,7 +36,7 @@ export const actions = {
             return {
                 ...articles,
             }
-        } else {
+        } else if (value === "Your Feed") {
             let articles = await artcielapi.getArticles({ page: pageNumber, author: locals.user.username, locals: locals })
             return {
                 ...articles,
