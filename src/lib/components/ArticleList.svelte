@@ -21,7 +21,6 @@
 	export let updateFormResultPagenation: SubmitFunction;
 </script>
 
-{nowLoading}
 {#if nowLoading}
 	<div class="article-preview">
 		<p>Loading Articles...</p>
