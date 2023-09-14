@@ -3,7 +3,6 @@ import type { paths } from "$lib/api/apitypes";
 const { GET, POST, DELETE, PUT } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 import { createHeadersOptions, getPageLimit } from '$lib/utils/utils';
 import { error as sveltekiterror } from '@sveltejs/kit';
-import { getTags } from "./tags";
 
 const pageLimit = getPageLimit()
 
@@ -22,6 +21,7 @@ export const getArticles = (async ({ page, author, favoritedUsername, tag, local
         headers: createHeadersOptions(locals)
     })
     if (error) {
+        //errorの発生は通常あり得ないので、500扱いとする
         sveltekiterror(500)
     } else {
         return {
@@ -42,6 +42,7 @@ export const getArticle = (async ({ slug, locals }: { slug: string, locals: App.
         headers: createHeadersOptions(locals)
     })
     if (error) {
+        //errorの発生は通常あり得ないので、500扱いとする
         sveltekiterror(500)
     } else {
         return {
@@ -101,6 +102,7 @@ export const getComments = (async ({ slug, locals }: { slug: string, locals: App
         headers: createHeadersOptions(locals)
     })
     if (error) {
+        //errorの発生は通常あり得ないので、500扱いとする
         sveltekiterror(500)
     } else {
         return {
@@ -139,6 +141,7 @@ export const deleteArticle = (async ({ slug, locals }: { slug: string, locals: A
         headers: createHeadersOptions(locals)
     })
     if (error) {
+        //errorの発生は通常あり得ないので、500扱いとする
         sveltekiterror(500)
     } else {
         return

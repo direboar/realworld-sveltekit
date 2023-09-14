@@ -1,6 +1,6 @@
 import createClient from "openapi-fetch";
 import type { paths } from "$lib/api/apitypes";
-const { GET, POST, DELETE, PUT } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
+const { GET } = createClient<paths>({ baseUrl: "https://api.realworld.io/api" });
 import { createHeadersOptions, getPageLimit } from '$lib/utils/utils';
 import { error as sveltekiterror } from '@sveltejs/kit';
 
@@ -13,6 +13,7 @@ export const getTags = (async (locals: App.Locals) => {
         headers: createHeadersOptions(locals)
     })
     if (error) {
+        //errorの発生は通常あり得ないので、500扱いとする
         sveltekiterror(500)
     } else {
         return data.tags
